@@ -1,0 +1,425 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		025F4ACFA132A8B02504A4AB /* MailKitBridgeExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3C83D6E45A2BAE87DB76CDB0 /* MailKitBridgeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D591F49DA95AA01B7871A0B /* MailKitBridgeExtension.swift */; };
+		53AAE78EB65BA8EEF07BEA7A /* MailKitBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E960C3366D1AD56D271C1 /* MailKitBridgeApp.swift */; };
+		67E86A17D2F443F5AA29B6B5 /* MessageActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6121CE219B925D1B5E8FE6 /* MessageActionHandler.swift */; };
+		BE1264659C8150E307420B52 /* EventPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF0BC4C0AE31ED71912BA0 /* EventPoster.swift */; };
+		C28DE6FE32F8FA3A5D3849A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBAE1D4B59870B3674EE90B /* ContentView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0673240AFDC250552C900124 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C5E4E0011FD3B587F72E0922 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0C7D96B5336C2B696DD2D544;
+			remoteInfo = MailKitBridgeExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9510A44D54DC426CE1654541 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				025F4ACFA132A8B02504A4AB /* MailKitBridgeExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		01FE32BD2C9022A71DF35287 /* MailKitBridgeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailKitBridgeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MailKitBridgeExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		59BF0BC4C0AE31ED71912BA0 /* EventPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPoster.swift; sourceTree = "<group>"; };
+		5D591F49DA95AA01B7871A0B /* MailKitBridgeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailKitBridgeExtension.swift; sourceTree = "<group>"; };
+		6B6121CE219B925D1B5E8FE6 /* MessageActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageActionHandler.swift; sourceTree = "<group>"; };
+		7FBAE1D4B59870B3674EE90B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		C10E960C3366D1AD56D271C1 /* MailKitBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailKitBridgeApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		2448FE1F229F1B3BFC502CCB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				01FE32BD2C9022A71DF35287 /* MailKitBridgeApp.app */,
+				354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2D34AB6A83EFD8666E2F1DE1 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7FBAE1D4B59870B3674EE90B /* ContentView.swift */,
+				C10E960C3366D1AD56D271C1 /* MailKitBridgeApp.swift */,
+			);
+			name = Sources;
+			path = MailKitBridgeApp/Sources;
+			sourceTree = "<group>";
+		};
+		75793CC9E8091DDB12D1394D = {
+			isa = PBXGroup;
+			children = (
+				2D34AB6A83EFD8666E2F1DE1 /* Sources */,
+				8520484F240EFC0D1B4802BA /* Sources */,
+				2448FE1F229F1B3BFC502CCB /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8520484F240EFC0D1B4802BA /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				59BF0BC4C0AE31ED71912BA0 /* EventPoster.swift */,
+				5D591F49DA95AA01B7871A0B /* MailKitBridgeExtension.swift */,
+				6B6121CE219B925D1B5E8FE6 /* MessageActionHandler.swift */,
+			);
+			name = Sources;
+			path = MailKitBridgeExtension/Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0C7D96B5336C2B696DD2D544 /* MailKitBridgeExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2D116A7A488F99ACFE631004 /* Build configuration list for PBXNativeTarget "MailKitBridgeExtension" */;
+			buildPhases = (
+				D8E553FC80F59034B32DDFCD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MailKitBridgeExtension;
+			packageProductDependencies = (
+			);
+			productName = MailKitBridgeExtension;
+			productReference = 354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		9D7939CB20D298C30BA603F9 /* MailKitBridgeApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5220669676737AC7DC6B3994 /* Build configuration list for PBXNativeTarget "MailKitBridgeApp" */;
+			buildPhases = (
+				DA1781D6B75A77F62D9E840D /* Sources */,
+				9510A44D54DC426CE1654541 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				839A74F219E2B21214BC17FA /* PBXTargetDependency */,
+			);
+			name = MailKitBridgeApp;
+			packageProductDependencies = (
+			);
+			productName = MailKitBridgeApp;
+			productReference = 01FE32BD2C9022A71DF35287 /* MailKitBridgeApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		C5E4E0011FD3B587F72E0922 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					0C7D96B5336C2B696DD2D544 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					9D7939CB20D298C30BA603F9 = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = F5F097F015776C1B60A8519A /* Build configuration list for PBXProject "MailKitBridge" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 75793CC9E8091DDB12D1394D;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2448FE1F229F1B3BFC502CCB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9D7939CB20D298C30BA603F9 /* MailKitBridgeApp */,
+				0C7D96B5336C2B696DD2D544 /* MailKitBridgeExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8E553FC80F59034B32DDFCD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BE1264659C8150E307420B52 /* EventPoster.swift in Sources */,
+				3C83D6E45A2BAE87DB76CDB0 /* MailKitBridgeExtension.swift in Sources */,
+				67E86A17D2F443F5AA29B6B5 /* MessageActionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA1781D6B75A77F62D9E840D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C28DE6FE32F8FA3A5D3849A4 /* ContentView.swift in Sources */,
+				53AAE78EB65BA8EEF07BEA7A /* MailKitBridgeApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		839A74F219E2B21214BC17FA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0C7D96B5336C2B696DD2D544 /* MailKitBridgeExtension */;
+			targetProxy = 0673240AFDC250552C900124 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2716A18DC4B1BFD9A22AD49D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = MailKitBridgeExtension/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdot.MailKitBridgeApp.extension;
+				PRODUCT_NAME = MailKitBridgeExtension;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		74131BF432641AB94D40893A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		7FFD4BA8C92E637A933ACF9E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = MailKitBridgeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdot.MailKitBridgeApp;
+				PRODUCT_NAME = MailKitBridgeApp;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		885FA49DEA7AE7A47DE1D398 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = MailKitBridgeExtension/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdot.MailKitBridgeApp.extension;
+				PRODUCT_NAME = MailKitBridgeExtension;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E734F3BBD2F67577B80C0F7A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				INFOPLIST_FILE = MailKitBridgeApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.jdot.MailKitBridgeApp;
+				PRODUCT_NAME = MailKitBridgeApp;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		FBF9CED4223EA459BFE1B6BD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2D116A7A488F99ACFE631004 /* Build configuration list for PBXNativeTarget "MailKitBridgeExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2716A18DC4B1BFD9A22AD49D /* Debug */,
+				885FA49DEA7AE7A47DE1D398 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5220669676737AC7DC6B3994 /* Build configuration list for PBXNativeTarget "MailKitBridgeApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7FFD4BA8C92E637A933ACF9E /* Debug */,
+				E734F3BBD2F67577B80C0F7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F5F097F015776C1B60A8519A /* Build configuration list for PBXProject "MailKitBridge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				74131BF432641AB94D40893A /* Debug */,
+				FBF9CED4223EA459BFE1B6BD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = C5E4E0011FD3B587F72E0922 /* Project object */;
+}

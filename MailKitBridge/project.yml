@@ -1,0 +1,45 @@
+name: MailKitBridge
+
+options:
+  bundleIdPrefix: com.jdot
+  deploymentTarget:
+    macOS: "12.0"
+  xcodeVersion: "15.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    MACOSX_DEPLOYMENT_TARGET: "12.0"
+    CODE_SIGN_STYLE: Automatic
+    DEVELOPMENT_TEAM: ""  # Set your Apple Developer Team ID here
+
+targets:
+  MailKitBridgeApp:
+    type: application
+    platform: macOS
+    sources:
+      - path: MailKitBridgeApp/Sources
+    dependencies:
+      - target: MailKitBridgeExtension
+        embed: true
+        codeSign: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jdot.MailKitBridgeApp
+        PRODUCT_NAME: MailKitBridgeApp
+        INFOPLIST_FILE: MailKitBridgeApp/Info.plist
+        ENABLE_HARDENED_RUNTIME: YES
+
+  MailKitBridgeExtension:
+    type: app-extension
+    platform: macOS
+    sources:
+      - path: MailKitBridgeExtension/Sources
+    resources:
+      - path: MailKitBridgeExtension/Resources/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.jdot.MailKitBridgeApp.extension
+        PRODUCT_NAME: MailKitBridgeExtension
+        INFOPLIST_FILE: MailKitBridgeExtension/Resources/Info.plist
+        ENABLE_HARDENED_RUNTIME: YES
