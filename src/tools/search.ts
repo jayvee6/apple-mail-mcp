@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, buildMessageRef } from "../applescript-runner.js";
+import { runScript, buildMessageRef, textContent } from "../applescript-runner.js";
 
 interface SearchResult {
   message_ref: string;
@@ -69,15 +69,9 @@ export function registerSearchTools(server: McpServer): void {
         before_date ?? "",
         String(limit),
       ]);
-      if (!raw) {
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify([]) }],
-        };
-      }
+      if (!raw) return textContent(JSON.stringify([]));
       const results = parseSearchResults(raw);
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(results, null, 2) }],
-      };
+      return textContent(JSON.stringify(results, null, 2));
     }
   );
 }

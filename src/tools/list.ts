@@ -1,11 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, buildMessageRef } from "../applescript-runner.js";
-
-interface FolderEntry {
-  account: string;
-  mailbox: string;
-}
+import { runScript, buildMessageRef, textContent } from "../applescript-runner.js";
 
 interface FolderTree {
   [account: string]: string[];
@@ -57,9 +52,7 @@ export function registerListTools(server: McpServer): void {
     async () => {
       const raw = await runScript("list_folders", []);
       const tree = parseFolders(raw);
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(tree, null, 2) }],
-      };
+      return textContent(JSON.stringify(tree, null, 2));
     }
   );
 
@@ -76,15 +69,9 @@ export function registerListTools(server: McpServer): void {
     },
     async ({ account, mailbox, offset, limit }) => {
       const raw = await runScript("list_messages", [account, mailbox, String(offset), String(limit)]);
-      if (!raw) {
-        return {
-          content: [{ type: "text" as const, text: JSON.stringify([]) }],
-        };
-      }
+      if (!raw) return textContent(JSON.stringify([]));
       const messages = parseMessages(raw, account, mailbox);
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(messages, null, 2) }],
-      };
+      return textContent(JSON.stringify(messages, null, 2));
     }
   );
 }

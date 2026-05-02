@@ -6,6 +6,10 @@ export function startBridge(port = 27182): http.Server {
     if (req.method === "POST" && req.url === "/event") {
       const chunks: Buffer[] = [];
       req.on("data", (c: Buffer) => chunks.push(c));
+      req.on("error", (err: Error) => {
+        console.error("[apple-mail] Bridge request error:", err.message);
+        res.writeHead(400).end("Bad Request");
+      });
       req.on("end", () => {
         try {
           const body = Buffer.concat(chunks).toString("utf8");
@@ -17,6 +21,14 @@ export function startBridge(port = 27182): http.Server {
       });
     } else {
       res.writeHead(404).end();
+    }
+  });
+
+  server.on("error", (err: NodeJS.ErrnoException) => {
+    if (err.code === "EADDRINUSE") {
+      console.error(`[apple-mail] Bridge port ${port} already in use — skipping MailKit event bridge.`);
+    } else {
+      console.error("[apple-mail] Bridge error:", err.message);
     }
   });
 

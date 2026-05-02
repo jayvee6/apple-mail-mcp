@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, parseMessageRef } from "../applescript-runner.js";
+import { runScript, parseMessageRef, textContent } from "../applescript-runner.js";
 
 export function registerComposeTools(server: McpServer): void {
   server.tool(
@@ -19,9 +19,7 @@ export function registerComposeTools(server: McpServer): void {
     },
     async ({ to, subject, body, cc, send }) => {
       const raw = await runScript("compose", [to, subject, body, cc ?? "", send ? "true" : "false"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 
@@ -42,9 +40,7 @@ export function registerComposeTools(server: McpServer): void {
     async ({ message_ref, body, send }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const raw = await runScript("reply", [account, mailbox, messageId, body, send ? "true" : "false"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 }

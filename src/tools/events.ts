@@ -1,5 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { drainEvents } from "../event-queue.js";
+import { textContent } from "../applescript-runner.js";
 
 export function registerEventTools(server: McpServer): void {
   server.tool(
@@ -10,9 +11,7 @@ export function registerEventTools(server: McpServer): void {
     {},
     async () => {
       const events = drainEvents();
-      return {
-        content: [{ type: "text" as const, text: JSON.stringify(events, null, 2) }],
-      };
+      return textContent(JSON.stringify(events, null, 2));
     }
   );
 }

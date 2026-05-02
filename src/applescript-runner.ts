@@ -1,16 +1,40 @@
 import { execFile } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { join, dirname } from "node:path";
+import { join, dirname, basename } from "node:path";
 import { promisify } from "node:util";
 
 const execFileAsync = promisify(execFile);
 const scriptsDir = join(dirname(fileURLToPath(import.meta.url)), "../scripts/applescript");
 
+/** AppleScript hangs indefinitely if Mail shows a permission prompt or is frozen. */
+const APPLESCRIPT_TIMEOUT_MS = 30_000;
+
+/** Convenience wrapper so tool handlers don't repeat `{ type: "text" as const, ... }`. */
+export function textContent(text: string) {
+  return { content: [{ type: "text" as const, text }] };
+}
+
 export async function runScript(scriptName: string, args: string[]): Promise<string> {
+  // Guard against path traversal — script names must be bare identifiers.
+  if (scriptName !== basename(scriptName)) {
+    throw new Error(`Invalid script name: ${scriptName}`);
+  }
+
   const scriptPath = join(scriptsDir, `${scriptName}.applescript`);
-  const { stdout, stderr } = await execFileAsync("osascript", [scriptPath, ...args]);
+  const { stdout, stderr } = await execFileAsync("osascript", [scriptPath, ...args], {
+    timeout: APPLESCRIPT_TIMEOUT_MS,
+  });
+
   if (stderr) console.error(`[applescript:${scriptName}]`, stderr.trim());
-  return stdout.trim();
+
+  const result = stdout.trim();
+  // AppleScript scripts signal not-found / bad-args with an "ERROR:" prefix.
+  // Surface these as real MCP tool errors rather than successful responses
+  // with error text embedded in the content.
+  if (result.startsWith("ERROR:")) {
+    throw new Error(result);
+  }
+  return result;
 }
 
 export function parseMessageRef(ref: string): { account: string; mailbox: string; messageId: string } {

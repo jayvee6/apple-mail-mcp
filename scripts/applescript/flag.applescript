@@ -16,12 +16,12 @@ on run argv
 
 	tell application "Mail"
 		set targetMbox to mailbox mboxName of (first account whose name = acctName)
-		repeat with m in messages of targetMbox
-			if message id of m = targetId then
-				set flagged status of m to flagValue
-				return "Flagged status set to " & doFlag
-			end if
-		end repeat
+		try
+			set m to first message of targetMbox whose message id = targetId
+		on error
+			return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
+		end try
+		set flagged status of m to flagValue
+		return "Flagged status set to " & doFlag
 	end tell
-	return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
 end run

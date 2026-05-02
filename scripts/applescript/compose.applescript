@@ -11,18 +11,22 @@ on run argv
 	set doSend to item 5 of argv
 
 	tell application "Mail"
-		set newMsg to make new outgoing message with properties {subject:subj, content:msgBody, visible:true}
-		tell newMsg
-			make new to recipient with properties {address:toAddr}
-			if ccAddr is not "" then
-				make new cc recipient with properties {address:ccAddr}
+		try
+			set newMsg to make new outgoing message with properties {subject:subj, content:msgBody, visible:true}
+			tell newMsg
+				make new to recipient with properties {address:toAddr}
+				if ccAddr is not "" then
+					make new cc recipient with properties {address:ccAddr}
+				end if
+			end tell
+			if doSend = "true" then
+				send newMsg
+				return "Sent to " & toAddr
+			else
+				return "Draft opened for " & toAddr
 			end if
-		end tell
-		if doSend = "true" then
-			send newMsg
-			return "Sent to " & toAddr
-		else
-			return "Draft opened for " & toAddr
-		end if
+		on error errMsg
+			return "ERROR: Failed to compose message — " & errMsg
+		end try
 	end tell
 end run

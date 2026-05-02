@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, parseMessageRef } from "../applescript-runner.js";
+import { runScript, parseMessageRef, textContent } from "../applescript-runner.js";
 
 export function registerReadTools(server: McpServer): void {
   server.tool(
@@ -18,9 +18,7 @@ export function registerReadTools(server: McpServer): void {
     async ({ message_ref }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const raw = await runScript("get_message", [account, mailbox, messageId]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 }

@@ -11,19 +11,23 @@ on run argv
 
 	tell application "Mail"
 		set targetMbox to mailbox mboxName of (first account whose name = acctName)
-		repeat with m in messages of targetMbox
-			if message id of m = targetId then
-				set replyMsg to reply m
-				set content of replyMsg to msgBody
-				if doSend = "true" then
-					send replyMsg
-					return "Reply sent"
-				else
-					set visible of replyMsg to true
-					return "Reply draft opened"
-				end if
+		try
+			set m to first message of targetMbox whose message id = targetId
+		on error
+			return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
+		end try
+		try
+			set replyMsg to reply m
+			set content of replyMsg to msgBody
+			if doSend = "true" then
+				send replyMsg
+				return "Reply sent"
+			else
+				set visible of replyMsg to true
+				return "Reply draft opened"
 			end if
-		end repeat
+		on error errMsg
+			return "ERROR: Failed to create reply — " & errMsg
+		end try
 	end tell
-	return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
 end run

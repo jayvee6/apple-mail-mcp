@@ -12,12 +12,12 @@ on run argv
 	tell application "Mail"
 		set destMailbox to mailbox destMbox of (first account whose name = destAcct)
 		set srcMailbox to mailbox srcMbox of (first account whose name = srcAcct)
-		repeat with m in messages of srcMailbox
-			if message id of m = targetId then
-				move m to destMailbox
-				return "Moved to " & destAcct & "/" & destMbox
-			end if
-		end repeat
+		try
+			set m to first message of srcMailbox whose message id = targetId
+		on error
+			return "ERROR: Message not found in " & srcMbox & ". The message may have been moved. Call list_emails again to refresh."
+		end try
+		move m to destMailbox
+		return "Moved to " & destAcct & "/" & destMbox
 	end tell
-	return "ERROR: Message not found in " & srcMbox & ". The message may have been moved. Call list_emails again to refresh."
 end run

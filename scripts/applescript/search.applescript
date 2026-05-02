@@ -74,22 +74,11 @@ on run argv
 					set candidates to messages of mbox
 				end if
 
-				-- Apply remaining filters in a loop
+				-- Apply remaining filters in a loop (whose clause above narrows by at most one
+				-- criterion; check all criteria here to handle the multi-filter case correctly)
 				repeat with m in candidates
 					if resultCount >= limitNum then exit repeat
 
-					-- Subject filter (if not used in whose clause)
-					if fromFilter is not "" and subjectFilter is not "" then
-						if subject of m does not contain subjectFilter then
-							-- skip
-						else
-							-- pass; fall through to date check
-						end if
-					else if subjectFilter is not "" and fromFilter is "" then
-						-- already applied via whose clause
-					end if
-
-					-- Rebuild with proper multi-condition check
 					set passFilter to true
 
 					if fromFilter is not "" and sender of m does not contain fromFilter then

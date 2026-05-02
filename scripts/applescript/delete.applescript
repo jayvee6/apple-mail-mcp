@@ -13,12 +13,12 @@ on run argv
 		set acct to first account whose name = acctName
 		set trashMailbox to mailbox trashName of acct
 		set srcMailbox to mailbox mboxName of acct
-		repeat with m in messages of srcMailbox
-			if message id of m = targetId then
-				move m to trashMailbox
-				return "Moved to " & trashName
-			end if
-		end repeat
+		try
+			set m to first message of srcMailbox whose message id = targetId
+		on error
+			return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
+		end try
+		move m to trashMailbox
+		return "Moved to " & trashName
 	end tell
-	return "ERROR: Message not found in " & mboxName & ". The message may have been moved. Call list_emails again to refresh."
 end run

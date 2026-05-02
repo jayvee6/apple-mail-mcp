@@ -1,15 +1,29 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, parseMessageRef } from "../applescript-runner.js";
+import { runScript, parseMessageRef, textContent } from "../applescript-runner.js";
 
-// iCloud uses "Deleted Messages"; Gmail uses "Trash"
+// Per-provider special-mailbox names. Fallbacks cover unknown providers.
 const TRASH_MAILBOX: Record<string, string> = {
   iCloud: "Deleted Messages",
   Google: "Trash",
 };
+const ARCHIVE_MAILBOX: Record<string, string> = {
+  iCloud: "Archive",
+  Google: "All Mail",
+};
+const JUNK_MAILBOX: Record<string, string> = {
+  iCloud: "Junk",
+  Google: "Spam",
+};
 
 function trashMailboxForAccount(account: string): string {
   return TRASH_MAILBOX[account] ?? "Deleted Messages";
+}
+function archiveMailboxForAccount(account: string): string {
+  return ARCHIVE_MAILBOX[account] ?? "Archive";
+}
+function junkMailboxForAccount(account: string): string {
+  return JUNK_MAILBOX[account] ?? "Junk";
 }
 
 export function registerOrganizeTools(server: McpServer): void {
@@ -26,24 +40,21 @@ export function registerOrganizeTools(server: McpServer): void {
     async ({ message_ref, dest_account, dest_mailbox }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const raw = await runScript("move", [account, mailbox, messageId, dest_account, dest_mailbox]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 
   server.tool(
     "archive_email",
-    "Move an email to the Archive mailbox of its account.",
+    "Move an email to the Archive mailbox of its account. Uses 'Archive' for iCloud, 'All Mail' for Gmail.",
     {
       message_ref: z.string().describe("Composite message reference from list_emails or search_emails."),
     },
     async ({ message_ref }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
-      const raw = await runScript("move", [account, mailbox, messageId, account, "Archive"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      const archiveName = archiveMailboxForAccount(account);
+      const raw = await runScript("move", [account, mailbox, messageId, account, archiveName]);
+      return textContent(raw);
     }
   );
 
@@ -57,9 +68,7 @@ export function registerOrganizeTools(server: McpServer): void {
     async ({ message_ref, flagged }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const raw = await runScript("flag", [account, mailbox, messageId, flagged ? "true" : "false"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 
@@ -73,24 +82,21 @@ export function registerOrganizeTools(server: McpServer): void {
     async ({ message_ref, read }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const raw = await runScript("mark_read", [account, mailbox, messageId, read ? "true" : "false"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 
   server.tool(
     "move_to_junk",
-    "Move an email to the Junk mailbox of its account.",
+    "Move an email to the Junk/Spam mailbox of its account. Uses 'Junk' for iCloud, 'Spam' for Gmail.",
     {
       message_ref: z.string().describe("Composite message reference from list_emails or search_emails."),
     },
     async ({ message_ref }) => {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
-      const raw = await runScript("move", [account, mailbox, messageId, account, "Junk"]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      const junkName = junkMailboxForAccount(account);
+      const raw = await runScript("move", [account, mailbox, messageId, account, junkName]);
+      return textContent(raw);
     }
   );
 
@@ -104,9 +110,7 @@ export function registerOrganizeTools(server: McpServer): void {
       const { account, mailbox, messageId } = parseMessageRef(message_ref);
       const trashName = trashMailboxForAccount(account);
       const raw = await runScript("delete", [account, mailbox, messageId, trashName]);
-      return {
-        content: [{ type: "text" as const, text: raw }],
-      };
+      return textContent(raw);
     }
   );
 }
