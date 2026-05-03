@@ -36,14 +36,21 @@ Built on [AppleScript](https://developer.apple.com/library/archive/documentation
 
 ## Installation
 
+### One-liner
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jayvee6/apple-mail-mcp/master/install.sh | bash
+```
+
+The script clones the repo to `~/apple-mail-mcp`, builds it, and automatically patches `~/Library/Application Support/Claude/claude_desktop_config.json`. Then restart Claude Desktop.
+
+### Manual
+
 ```bash
 git clone https://github.com/jayvee6/apple-mail-mcp.git
 cd apple-mail-mcp
-npm install
-npm run build
+npm install && npm run build
 ```
-
-### Claude Desktop
 
 Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
@@ -51,16 +58,14 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "apple-mail": {
-      "command": "node",
-      "args": ["/absolute/path/to/apple-mail-mcp/dist/index.js"]
+      "command": "/opt/homebrew/bin/node",
+      "args": ["/path/to/apple-mail-mcp/dist/index.js"]
     }
   }
 }
 ```
 
-Replace the path with the actual location on your machine. Use `which node` if you need the full path to the `node` binary.
-
-Restart Claude Desktop, then ask: *"What folders do I have in my mail?"*
+Use `which node` to get the full path to your Node binary. Restart Claude Desktop, then ask: *"What folders do I have in my mail?"*
 
 ### Automation Permission
 
