@@ -1,8 +1,12 @@
 # apple-mail-mcp
 
-An MCP server that gives Claude full control over Apple Mail on macOS — read, search, compose, reply, move, flag, and delete messages using natural language.
+**The only way to give Claude (or any LLM) access to Apple Mail and iCloud.**
 
-Built on [AppleScript](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/) via `osascript` for Mail automation, with an optional MailKit extension for real-time new-mail events.
+Gmail and Outlook have APIs. iCloud doesn't. If you're a Mac user whose email lives in Apple Mail — iCloud, iCloud+, or any account synced through it — there's no web API an LLM can call. This server bridges that gap using AppleScript on your local machine.
+
+It gives Claude full control over Apple Mail: read, search, compose, reply, move, flag, and delete messages using natural language, against your real inbox, with no cloud intermediary.
+
+Built on [AppleScript](https://developer.apple.com/library/archive/documentation/AppleScript/Conceptual/AppleScriptLangGuide/) via `osascript`, with an optional MailKit extension for real-time new-mail events.
 
 ---
 
