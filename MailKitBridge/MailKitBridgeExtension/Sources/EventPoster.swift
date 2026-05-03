@@ -14,6 +14,10 @@ struct MailEvent: Encodable {
 /// Fire-and-forget HTTP poster. Posts a single `MailEvent` to the
 /// apple-mail-mcp bridge on localhost:27182. Errors are silently dropped —
 /// the MCP server may not be running and that must not affect Mail.app.
+///
+/// Auth note: the bridge binds to 127.0.0.1 only (no external access), so
+/// no Bearer token is needed. The sandboxed extension cannot read files
+/// outside its container anyway, making token-file auth unworkable.
 enum EventPoster {
 
     static let bridgeURL = URL(string: "http://127.0.0.1:27182/event")!

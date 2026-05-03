@@ -1,5 +1,21 @@
 import * as http from "node:http";
+import { z } from "zod";
 import { pushEvent, type MailEvent } from "./event-queue.js";
+
+// The bridge only binds to 127.0.0.1 — no external access is possible.
+// Bearer-token auth is omitted because the sandboxed MailKit extension
+// cannot read ~/.apple-mail-mcp.secret (outside its container), and
+// localhost-only binding already limits who can POST here.
+
+const MailEventSchema = z.object({
+  subject: z.string(),
+  from: z.string(),
+  date: z.string(),
+  messageId: z.string(),
+  preview: z.string(),
+  receivedAt: z.string().optional(),
+  encryptionState: z.string().optional(),
+});
 
 export function startBridge(port = 27182): http.Server {
   const server = http.createServer((req, res) => {
@@ -13,7 +29,13 @@ export function startBridge(port = 27182): http.Server {
       req.on("end", () => {
         try {
           const body = Buffer.concat(chunks).toString("utf8");
-          pushEvent(JSON.parse(body) as MailEvent);
+          const parsed = MailEventSchema.safeParse(JSON.parse(body));
+          if (!parsed.success) {
+            res.writeHead(400).end("Bad Request");
+            return;
+          }
+          pushEvent(parsed.data as MailEvent);
+          console.error(`[apple-mail] Event received: ${parsed.data.messageId}`);
           res.writeHead(200).end("OK");
         } catch {
           res.writeHead(400).end("Bad Request");
