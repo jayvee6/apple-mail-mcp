@@ -32,7 +32,7 @@
             </array>
         </dict>
         <key>NSExtensionPointIdentifier</key>
-        <string>com.apple.mail.extension</string>
+        <string>com.apple.email.extension</string>
         <key>NSExtensionPrincipalClass</key>
         <string>$(PRODUCT_MODULE_NAME).MailKitBridgeExtension</string>
     </dict>
