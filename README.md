@@ -94,6 +94,27 @@ The first time you use a mail tool, macOS will ask whether to allow `node` to co
 
 ---
 
+## Companion Skill — Email Compose Review
+
+The `skill/SKILL.md` file in this repo is a Claude skill that adds a multi-agent review pipeline to every email Claude drafts. Before opening a compose window, Claude runs the draft through five parallel reviewers:
+
+| Reviewer | Checks |
+|---|---|
+| Slop detector | AI writing tells, filler phrases, corporate buzzwords |
+| Copy editor | Spelling, grammar, punctuation |
+| Active voice | Passive → active constructions |
+| Correctness | Names, dates, facts match the context |
+| Logic & clarity | Clear ask, logical structure, appropriate length |
+
+An arbiter synthesizes the reviews into a revised draft and changelog. Claude shows you the result and waits for your approval before opening the draft in Mail. `send: true` is never used for LLM-drafted email — you send from Mail yourself.
+
+To install the skill in Claude Code:
+```bash
+/skill install /path/to/apple-mail-mcp/skill/SKILL.md
+```
+
+---
+
 ## How It Works
 
 ```
