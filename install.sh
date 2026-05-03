@@ -101,10 +101,19 @@ if os.path.exists(config_path):
 if "mcpServers" not in config:
     config["mcpServers"] = {}
 
-config["mcpServers"]["apple-mail"] = {
-    "command": node_bin,
-    "args": [dist_path]
-}
+# Use npx so the config stays valid regardless of node path or future moves.
+# Falls back to local build path if npx isn't available.
+npx_bin = os.path.join(os.path.dirname(node_bin), "npx")
+if os.path.isfile(npx_bin):
+    config["mcpServers"]["apple-mail"] = {
+        "command": npx_bin,
+        "args": ["-y", "@jayvee6/apple-mail-mcp"]
+    }
+else:
+    config["mcpServers"]["apple-mail"] = {
+        "command": node_bin,
+        "args": [dist_path]
+    }
 
 with open(config_path, "w") as f:
     json.dump(config, f, indent=2)

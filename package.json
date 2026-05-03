@@ -1,11 +1,16 @@
 {
-  "name": "apple-mail-mcp",
+  "name": "@jayvee6/apple-mail-mcp",
   "version": "0.1.0",
-  "description": "MCP server for Apple Mail — AppleScript bridge + MailKit extension event push",
+  "description": "The only way to give Claude (or any LLM) access to Apple Mail and iCloud — local AppleScript bridge for macOS",
   "main": "dist/index.js",
   "bin": {
     "apple-mail-mcp": "dist/index.js"
   },
+  "files": [
+    "dist/",
+    "scripts/"
+  ],
+  "mcpName": "io.github.jayvee6/apple-mail-mcp",
   "scripts": {
     "build": "tsc",
     "dev": "tsx src/index.ts",
