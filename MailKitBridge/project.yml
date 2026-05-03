@@ -3,13 +3,13 @@ name: MailKitBridge
 options:
   bundleIdPrefix: com.jdot
   deploymentTarget:
-    macOS: "12.0"
+    macOS: "13.0"
   xcodeVersion: "15.0"
 
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MACOSX_DEPLOYMENT_TARGET: "12.0"
+    MACOSX_DEPLOYMENT_TARGET: "13.0"
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: ""  # Set your Apple Developer Team ID here
 
