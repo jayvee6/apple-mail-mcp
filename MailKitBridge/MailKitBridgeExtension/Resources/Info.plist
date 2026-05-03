@@ -24,8 +24,15 @@
     <string>$(MACOSX_DEPLOYMENT_TARGET)</string>
     <key>NSExtension</key>
     <dict>
+        <key>NSExtensionAttributes</key>
+        <dict>
+            <key>MEExtensionCapabilities</key>
+            <array>
+                <string>MEMessageActionHandler</string>
+            </array>
+        </dict>
         <key>NSExtensionPointIdentifier</key>
-        <string>com.apple.mail.message-action-handler</string>
+        <string>com.apple.mail.extension</string>
         <key>NSExtensionPrincipalClass</key>
         <string>$(PRODUCT_MODULE_NAME).MailKitBridgeExtension</string>
     </dict>

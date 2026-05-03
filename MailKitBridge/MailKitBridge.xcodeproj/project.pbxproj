@@ -138,11 +138,11 @@
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					0C7D96B5336C2B696DD2D544 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ATGGQ68RUK;
 						ProvisioningStyle = Automatic;
 					};
 					9D7939CB20D298C30BA603F9 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = ATGGQ68RUK;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -251,7 +251,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ATGGQ68RUK;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -287,6 +287,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = MailKitBridgeApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -321,6 +322,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				INFOPLIST_FILE = MailKitBridgeApp/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -367,7 +369,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = ATGGQ68RUK;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;

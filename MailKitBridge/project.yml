@@ -11,7 +11,7 @@ settings:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "13.0"
     CODE_SIGN_STYLE: Automatic
-    DEVELOPMENT_TEAM: ""  # Set your Apple Developer Team ID here
+    DEVELOPMENT_TEAM: "ATGGQ68RUK"
 
 targets:
   MailKitBridgeApp:
