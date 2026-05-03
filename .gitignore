@@ -2,3 +2,8 @@ node_modules/
 .DS_Store
 dist/
 *.log
+
+# Xcode user state
+*.xcuserstate
+xcschememanagement.plist
+*.xcworkspace/xcuserdata/
