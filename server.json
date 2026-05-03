@@ -2,7 +2,7 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.jayvee6/apple-mail-mcp",
   "title": "Apple Mail MCP",
-  "description": "The only way to give Claude (or any LLM) access to Apple Mail and iCloud. Local AppleScript bridge for macOS — read, search, compose, reply, move, flag, and delete messages. Works with any account in Apple Mail: iCloud, iCloud+, Gmail, and others.",
+  "description": "LLM access to Apple Mail and iCloud via AppleScript. Read, search, compose, reply, flag and delete.",
   "version": "0.1.0",
   "repository": {
     "url": "https://github.com/jayvee6/apple-mail-mcp",
