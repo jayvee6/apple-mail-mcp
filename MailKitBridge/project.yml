@@ -29,6 +29,7 @@ targets:
         PRODUCT_NAME: MailKitBridgeApp
         INFOPLIST_FILE: MailKitBridgeApp/Info.plist
         ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: MailKitBridgeApp/MailKitBridgeApp.entitlements
 
   MailKitBridgeExtension:
     type: app-extension
@@ -43,3 +44,4 @@ targets:
         PRODUCT_NAME: MailKitBridgeExtension
         INFOPLIST_FILE: MailKitBridgeExtension/Resources/Info.plist
         ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: MailKitBridgeExtension/MailKitBridgeExtension.entitlements
