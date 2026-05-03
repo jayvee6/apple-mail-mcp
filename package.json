@@ -1,5 +1,5 @@
 {
-  "name": "@jayvee6/apple-mail-mcp",
+  "name": "@jdot6/apple-mail-mcp",
   "version": "0.1.0",
   "description": "The only way to give Claude (or any LLM) access to Apple Mail and iCloud — local AppleScript bridge for macOS",
   "main": "dist/index.js",

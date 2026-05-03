@@ -49,7 +49,7 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
   "mcpServers": {
     "apple-mail": {
       "command": "npx",
-      "args": ["-y", "@jayvee6/apple-mail-mcp"]
+      "args": ["-y", "@jdot6/apple-mail-mcp"]
     }
   }
 }

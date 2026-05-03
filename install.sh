@@ -107,7 +107,7 @@ npx_bin = os.path.join(os.path.dirname(node_bin), "npx")
 if os.path.isfile(npx_bin):
     config["mcpServers"]["apple-mail"] = {
         "command": npx_bin,
-        "args": ["-y", "@jayvee6/apple-mail-mcp"]
+        "args": ["-y", "@jdot6/apple-mail-mcp"]
     }
 else:
     config["mcpServers"]["apple-mail"] = {

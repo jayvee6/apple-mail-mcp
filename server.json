@@ -11,7 +11,7 @@
   "packages": [
     {
       "registryType": "npm",
-      "identifier": "@jayvee6/apple-mail-mcp",
+      "identifier": "@jdot6/apple-mail-mcp",
       "version": "0.1.0",
       "transport": {
         "type": "stdio"
