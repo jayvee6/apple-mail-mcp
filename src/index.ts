@@ -13,7 +13,11 @@ import { startBridge } from "./bridge.js";
 
 async function main(): Promise<void> {
   // Start the HTTP bridge for MailKit extension events (idles harmlessly if extension not installed)
-  startBridge();
+  const bridgeServer = startBridge();
+
+  const shutdown = () => bridgeServer.close(() => process.exit(0));
+  process.on("SIGTERM", shutdown);
+  process.on("SIGINT", shutdown);
 
   // Connect to Claude via stdio
   const transport = new StdioServerTransport();

@@ -38,7 +38,13 @@ export function registerOrganizeTools(server: McpServer): void {
         .describe('Destination mailbox name, e.g. "Finance & Accounts". Must match exactly (case-sensitive).'),
     },
     async ({ message_ref, dest_account, dest_mailbox }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const raw = await runScript("move", [account, mailbox, messageId, dest_account, dest_mailbox]);
       return textContent(raw);
     }
@@ -51,7 +57,13 @@ export function registerOrganizeTools(server: McpServer): void {
       message_ref: z.string().describe("Composite message reference from list_emails or search_emails."),
     },
     async ({ message_ref }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const archiveName = archiveMailboxForAccount(account);
       const raw = await runScript("move", [account, mailbox, messageId, account, archiveName]);
       return textContent(raw);
@@ -66,7 +78,13 @@ export function registerOrganizeTools(server: McpServer): void {
       flagged: z.boolean().describe("True to flag the message, false to unflag it."),
     },
     async ({ message_ref, flagged }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const raw = await runScript("flag", [account, mailbox, messageId, flagged ? "true" : "false"]);
       return textContent(raw);
     }
@@ -80,7 +98,13 @@ export function registerOrganizeTools(server: McpServer): void {
       read: z.boolean().describe("True to mark as read, false to mark as unread."),
     },
     async ({ message_ref, read }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const raw = await runScript("mark_read", [account, mailbox, messageId, read ? "true" : "false"]);
       return textContent(raw);
     }
@@ -93,7 +117,13 @@ export function registerOrganizeTools(server: McpServer): void {
       message_ref: z.string().describe("Composite message reference from list_emails or search_emails."),
     },
     async ({ message_ref }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const junkName = junkMailboxForAccount(account);
       const raw = await runScript("move", [account, mailbox, messageId, account, junkName]);
       return textContent(raw);
@@ -107,7 +137,13 @@ export function registerOrganizeTools(server: McpServer): void {
       message_ref: z.string().describe("Composite message reference from list_emails or search_emails."),
     },
     async ({ message_ref }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const trashName = trashMailboxForAccount(account);
       const raw = await runScript("delete", [account, mailbox, messageId, trashName]);
       return textContent(raw);

@@ -14,6 +14,9 @@ export function textContent(text: string) {
   return { content: [{ type: "text" as const, text }] };
 }
 
+// Security: args are passed via execFile's args array (never shell-interpolated) and read
+// in AppleScript as positional argv items. AppleScript treats them as data, not code —
+// there is no injection risk from user-supplied strings passed as positional arguments.
 export async function runScript(scriptName: string, args: string[]): Promise<string> {
   // Guard against path traversal — script names must be bare identifiers.
   if (scriptName !== basename(scriptName)) {

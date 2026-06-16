@@ -26,12 +26,24 @@ class MessageActionHandler: NSObject, MEMessageActionHandler {
         let from = message.fromAddress.addressString ?? message.fromAddress.rawString
 
         // Prefer the Date: header (already a string); fall back to now.
-        let date = message.headers?["date"]?.first
-            ?? ISO8601DateFormatter().string(from: Date())
+        let date: String
+        if let headerDate = message.headers?["date"]?.first {
+            date = headerDate
+        } else {
+            date = ISO8601DateFormatter().string(from: Date())
+            NSLog("[MailKitBridge] Missing Date header for message, using current time as fallback")
+        }
 
         // message-id header per RFC 2822 (angle brackets included is fine).
-        let messageId = message.headers?["message-id"]?.first
-            ?? UUID().uuidString
+        let messageId: String
+        if let headerId = message.headers?["message-id"]?.first {
+            messageId = headerId
+        } else {
+            messageId = UUID().uuidString
+            NSLog("[MailKitBridge] Missing Message-ID header — using UUID fallback; this event cannot be matched to list_emails results")
+        }
+
+        let receivedAt = ISO8601DateFormatter().string(from: Date())
 
         let preview = extractPreview(from: rawData)
 
@@ -44,6 +56,7 @@ class MessageActionHandler: NSObject, MEMessageActionHandler {
             date: date,
             messageId: messageId,
             preview: preview,
+            receivedAt: receivedAt,
             encryptionState: encryptionState
         ))
 

@@ -8,6 +8,7 @@ struct MailEvent: Encodable {
     let date: String
     let messageId: String
     let preview: String
+    let receivedAt: String
     let encryptionState: String?
 }
 

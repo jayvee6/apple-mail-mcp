@@ -16,7 +16,13 @@ export function registerReadTools(server: McpServer): void {
         ),
     },
     async ({ message_ref }) => {
-      const { account, mailbox, messageId } = parseMessageRef(message_ref);
+      let ref;
+      try {
+        ref = parseMessageRef(message_ref);
+      } catch (err) {
+        return textContent(`ERROR: Invalid message_ref — ${(err as Error).message}`);
+      }
+      const { account, mailbox, messageId } = ref;
       const raw = await runScript("get_message", [account, mailbox, messageId]);
       return textContent(raw);
     }

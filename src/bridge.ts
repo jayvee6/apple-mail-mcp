@@ -35,9 +35,10 @@ export function startBridge(port = 27182): http.Server {
             return;
           }
           pushEvent(parsed.data as MailEvent);
-          console.error(`[apple-mail] Event received: ${parsed.data.messageId}`);
+          console.error("[apple-mail] Event received");
           res.writeHead(200).end("OK");
-        } catch {
+        } catch (err) {
+          console.error("[apple-mail] Bridge parse error:", err instanceof Error ? (err as Error).message : String(err));
           res.writeHead(400).end("Bad Request");
         }
       });

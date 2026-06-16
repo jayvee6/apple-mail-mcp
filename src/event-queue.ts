@@ -12,9 +12,12 @@ const MAX = 100;
 const queue: MailEvent[] = [];
 
 export function pushEvent(e: MailEvent): void {
-  e.receivedAt = new Date().toISOString();
+  e.receivedAt = e.receivedAt ?? new Date().toISOString();
   queue.push(e);
-  if (queue.length > MAX) queue.shift();
+  if (queue.length > MAX) {
+    const dropped = queue.shift()!;
+    console.error(`[apple-mail] Event queue full: dropped event "${dropped.subject}" from ${dropped.from}`);
+  }
 }
 
 export function drainEvents(): MailEvent[] {
