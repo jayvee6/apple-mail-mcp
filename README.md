@@ -27,14 +27,19 @@ Built on [AppleScript](https://developer.apple.com/library/archive/documentation
 | `mark_read` | Mark a message as read or unread |
 | `delete_email` | Move to Deleted Messages (iCloud) or Trash (Gmail) |
 | `get_pending_events` | Drain real-time new-mail events from the MailKit bridge |
+| `summarize_email` | Summarize a message in 2-3 sentences via local AI |
+| `classify_email` | Classify by category, priority, and action-required via local AI |
+| `draft_reply` | Draft a reply body via local AI (review before sending) |
+| `triage_inbox` | Bulk-classify up to 20 messages, sorted by priority |
 
 ---
 
 ## Requirements
 
-- **macOS** (tested on Sonoma / Sequoia)
+- **macOS** (tested on Sonoma / Sequoia / macOS 26)
 - **Apple Mail** open and configured with at least one account
 - **Node.js 18+**
+- **LM Studio** (optional) — for local AI tools; any OpenAI-compatible server works
 
 ---
 
@@ -91,6 +96,41 @@ Use `which node` to get the full path to your Node binary. Restart Claude Deskto
 ### Automation Permission
 
 The first time you use a mail tool, macOS will ask whether to allow `node` to control Mail. Click **Allow**. If you accidentally deny it, go to **System Settings → Privacy & Security → Automation** and re-enable it for your terminal or Node.js runtime.
+
+---
+
+## Local AI (optional)
+
+The AI tools run against any local LLM via [LM Studio](https://lmstudio.ai) or any OpenAI-compatible server. Email data never leaves your machine with the default config.
+
+Configure via environment variables in `claude_desktop_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "apple-mail": {
+      "command": "npx",
+      "args": ["-y", "@jdot6/apple-mail-mcp"],
+      "env": {
+        "APPLE_MAIL_AI_PROVIDER": "lmstudio",
+        "APPLE_MAIL_AI_ENDPOINT": "http://localhost:1234",
+        "APPLE_MAIL_AI_MODEL": "gemma-4-it"
+      }
+    }
+  }
+}
+```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `APPLE_MAIL_AI_PROVIDER` | `lmstudio` | `lmstudio` \| `openai` \| `foundation` \| `none` |
+| `APPLE_MAIL_AI_ENDPOINT` | `http://localhost:1234` | Base URL for the AI server |
+| `APPLE_MAIL_AI_MODEL` | `gemma-4-it` | Model identifier |
+| `APPLE_MAIL_AI_API_KEY` | *(none)* | Bearer token for remote providers |
+| `APPLE_MAIL_AI_ENRICH_EVENTS` | *(off)* | Set to `1` to auto-classify new mail events |
+| `APPLE_MAIL_AI_ALLOW_REMOTE` | *(off)* | Set to `1` to allow a non-localhost AI endpoint |
+
+> **Privacy note:** If you point `APPLE_MAIL_AI_ENDPOINT` at a remote server (e.g. OpenAI), full email content will be sent to that server. The server blocks this by default — you must set `APPLE_MAIL_AI_ALLOW_REMOTE=1` to acknowledge and enable it.
 
 ---
 
@@ -175,6 +215,8 @@ osascript scripts/applescript/list_messages.applescript "iCloud" "INBOX" "1" "5"
 - Script names are validated against `path.basename()` before use to prevent path traversal.
 - Arguments are passed to `osascript` via `execFile` (not a shell), so there is no shell-injection surface.
 - AppleScript calls time out after 30 seconds to prevent hangs if Mail is frozen or showing a permission prompt.
+- Email content in AI prompts is enclosed in XML delimiters (`<email>…</email>`) to guard against prompt-injection attacks in message bodies.
+- Remote AI endpoints are blocked by default — set `APPLE_MAIL_AI_ALLOW_REMOTE=1` to explicitly opt in to sending email data off-device.
 
 ---
 

@@ -21,8 +21,8 @@ export function pushEvent(e: MailEvent): void {
   e.receivedAt = e.receivedAt ?? new Date().toISOString();
   queue.push(e);
   if (queue.length > MAX) {
-    const dropped = queue.shift()!;
-    console.error(`[apple-mail] Event queue full: dropped event "${dropped.subject}" from ${dropped.from}`);
+    queue.shift();
+    console.error("[apple-mail] Event queue full: dropped oldest event (queue limit 100).");
   }
 }
 

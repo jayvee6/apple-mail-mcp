@@ -9,10 +9,39 @@ import { FoundationProvider } from "./foundation-provider.js";
 //   APPLE_MAIL_AI_MODEL     — model identifier (default: auto-detected from provider)
 //   APPLE_MAIL_AI_API_KEY   — bearer token for remote endpoints (optional)
 
+function isLocalEndpoint(url: string): boolean {
+  try {
+    const { hostname } = new URL(url);
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+  } catch {
+    return false;
+  }
+}
+
 function buildProvider(): AIProvider {
   const type = process.env.APPLE_MAIL_AI_PROVIDER ?? "lmstudio";
   const endpoint = (process.env.APPLE_MAIL_AI_ENDPOINT ?? "http://localhost:1234").replace(/\/$/, "");
   const apiKey = process.env.APPLE_MAIL_AI_API_KEY;
+
+  if (!isLocalEndpoint(endpoint) && process.env.APPLE_MAIL_AI_ALLOW_REMOTE !== "1") {
+    console.error(
+      `[apple-mail] SECURITY: APPLE_MAIL_AI_ENDPOINT is set to a remote URL (${endpoint}). ` +
+      "Email content will be sent off-device to this endpoint. " +
+      "Set APPLE_MAIL_AI_ALLOW_REMOTE=1 to acknowledge this and enable remote AI providers."
+    );
+    return {
+      name: "none",
+      complete: async () => { throw new Error("Remote AI endpoint blocked. Set APPLE_MAIL_AI_ALLOW_REMOTE=1 to enable."); },
+      isAvailable: async () => false,
+    };
+  }
+
+  if (!isLocalEndpoint(endpoint)) {
+    console.warn(
+      `[apple-mail] WARNING: Remote AI endpoint configured (${endpoint}). ` +
+      "Email subjects, previews, and full message content will be sent to this endpoint."
+    );
+  }
 
   switch (type) {
     case "lmstudio": {
