@@ -3,13 +3,13 @@ name: MailKitBridge
 options:
   bundleIdPrefix: com.jdot
   deploymentTarget:
-    macOS: "13.0"
-  xcodeVersion: "15.0"
+    macOS: "26.0"
+  xcodeVersion: "16.0"
 
 settings:
   base:
     SWIFT_VERSION: "5.9"
-    MACOSX_DEPLOYMENT_TARGET: "13.0"
+    MACOSX_DEPLOYMENT_TARGET: "26.0"
     CODE_SIGN_STYLE: Automatic
     DEVELOPMENT_TEAM: "ATGGQ68RUK"
 
@@ -19,6 +19,8 @@ targets:
     platform: macOS
     sources:
       - path: MailKitBridgeApp/Sources
+    resources:
+      - path: MailKitBridgeApp/PrivacyInfo.xcprivacy
     dependencies:
       - target: MailKitBridgeExtension
         embed: true
@@ -38,6 +40,7 @@ targets:
       - path: MailKitBridgeExtension/Sources
     resources:
       - path: MailKitBridgeExtension/Resources/Info.plist
+      - path: MailKitBridgeExtension/Resources/PrivacyInfo.xcprivacy
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.jdot.MailKitBridgeApp.extension

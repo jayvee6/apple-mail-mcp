@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- This extension does not track users across apps or websites. -->
+    <key>NSPrivacyTracking</key>
+    <false/>
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+    <!-- This extension reads incoming email metadata (subject, sender, preview)
+         solely to forward it to the user's locally running MCP server at
+         127.0.0.1:27182. No data is transmitted off-device or collected
+         by the developer. -->
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+    <!-- No required-reason APIs (UserDefaults, file timestamps, disk space,
+         keyboard, boot time) are used in this extension. -->
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array/>
+</dict>
+</plist>
