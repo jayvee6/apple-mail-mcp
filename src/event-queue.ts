@@ -6,6 +6,12 @@ export interface MailEvent {
   preview: string;
   receivedAt: string;
   encryptionState?: string; // "encrypted" | "encryptionFailed" — omitted when not encrypted
+  // AI enrichment — populated when APPLE_MAIL_AI_ENRICH_EVENTS=1 and a provider is available
+  aiSummary?: string;
+  aiCategory?: string;
+  aiPriority?: "high" | "medium" | "low";
+  aiActionRequired?: boolean;
+  aiTags?: string[];
 }
 
 const MAX = 100;

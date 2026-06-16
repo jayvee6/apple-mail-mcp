@@ -1,6 +1,7 @@
 import * as http from "node:http";
 import { z } from "zod";
 import { pushEvent, type MailEvent } from "./event-queue.js";
+import { enrichEvent } from "./ai/enrich.js";
 
 // The bridge only binds to 127.0.0.1 — no external access is possible.
 // Bearer-token auth is omitted because the sandboxed MailKit extension
@@ -34,9 +35,13 @@ export function startBridge(port = 27182): http.Server {
             res.writeHead(400).end("Bad Request");
             return;
           }
-          pushEvent(parsed.data as MailEvent);
-          console.error("[apple-mail] Event received");
+          // Respond immediately — the MailKit extension is fire-and-forget.
           res.writeHead(200).end("OK");
+          console.error("[apple-mail] Event received");
+          // Enrich with AI in the background, then push to the queue.
+          enrichEvent(parsed.data as MailEvent).then(pushEvent).catch(() => {
+            pushEvent(parsed.data as MailEvent);
+          });
         } catch (err) {
           console.error("[apple-mail] Bridge parse error:", err instanceof Error ? (err as Error).message : String(err));
           res.writeHead(400).end("Bad Request");
