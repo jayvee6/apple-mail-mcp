@@ -60,15 +60,20 @@ export function registerSearchTools(server: McpServer): void {
       limit: z.number().int().min(1).max(100).default(20).describe("Maximum number of results (max 100)."),
     },
     async ({ account, mailbox, from_filter, subject_filter, after_date, before_date, limit }) => {
-      const raw = await runScript("search", [
-        account ?? "ALL",
-        mailbox ?? "INBOX",
-        from_filter ?? "",
-        subject_filter ?? "",
-        after_date ?? "",
-        before_date ?? "",
-        String(limit),
-      ]);
+      const raw = await runScript(
+        "search",
+        [
+          account ?? "ALL",
+          mailbox ?? "INBOX",
+          from_filter ?? "",
+          subject_filter ?? "",
+          after_date ?? "",
+          before_date ?? "",
+          String(limit),
+        ],
+        // A whose-scan over a very large mailbox can run well past the default 30s.
+        { timeoutMs: 180_000 }
+      );
       if (!raw) return textContent(JSON.stringify([]));
       const results = parseSearchResults(raw);
       return textContent(JSON.stringify(results, null, 2));
