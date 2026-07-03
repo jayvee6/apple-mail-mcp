@@ -15,12 +15,14 @@ Built on [AppleScript](https://developer.apple.com/library/archive/documentation
 | Tool | Description |
 |------|-------------|
 | `list_folders` | List all accounts and their mailboxes |
+| `create_folder` | Create a new mailbox/folder in an account (idempotent) |
 | `list_emails` | Paginate messages in a mailbox (newest-first) |
 | `get_email` | Read a message's full headers and body |
 | `search_emails` | Filter by sender, subject, date range across mailboxes |
 | `compose_email` | Create a draft or send a new message immediately |
 | `reply_email` | Reply to a message, open as draft or send immediately |
 | `move_email` | Move a message to any mailbox |
+| `move_matching` | Bulk-move all messages matching a filter into a mailbox |
 | `archive_email` | Move to Archive (iCloud) or All Mail (Gmail) |
 | `move_to_junk` | Move to Junk (iCloud) or Spam (Gmail) |
 | `flag_email` | Set or clear the flag on a message |
