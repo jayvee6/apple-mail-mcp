@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, buildMessageRef, textContent } from "../applescript-runner.js";
+import { runScript, buildMessageRef, textContent, untrustedContent } from "../applescript-runner.js";
 
 interface FolderTree {
   [account: string]: string[];
@@ -71,7 +71,10 @@ export function registerListTools(server: McpServer): void {
       const raw = await runScript("list_messages", [account, mailbox, String(offset), String(limit)]);
       if (!raw) return textContent(JSON.stringify([]));
       const messages = parseMessages(raw, account, mailbox);
-      return textContent(JSON.stringify(messages, null, 2));
+      return untrustedContent(
+        JSON.stringify(messages, null, 2),
+        "Email list; subject/from fields are attacker-controlled."
+      );
     }
   );
 }

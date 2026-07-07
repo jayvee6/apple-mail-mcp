@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, buildMessageRef, textContent } from "../applescript-runner.js";
+import { runScript, buildMessageRef, textContent, untrustedContent } from "../applescript-runner.js";
 
 interface SearchResult {
   message_ref: string;
@@ -76,7 +76,10 @@ export function registerSearchTools(server: McpServer): void {
       );
       if (!raw) return textContent(JSON.stringify([]));
       const results = parseSearchResults(raw);
-      return textContent(JSON.stringify(results, null, 2));
+      return untrustedContent(
+        JSON.stringify(results, null, 2),
+        "Search results; subject/from fields are attacker-controlled."
+      );
     }
   );
 }

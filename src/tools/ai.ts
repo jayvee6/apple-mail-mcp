@@ -1,14 +1,16 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { ai } from "../ai/ai-manager.js";
-import { runScript, parseMessageRef, textContent } from "../applescript-runner.js";
+import { runScript, parseMessageRef, textContent, neutralizeEmailMarkers } from "../applescript-runner.js";
 
 const SYSTEM_PROMPT =
   "You are a concise email assistant. Respond only with the requested output — " +
   "no preambles, no sign-offs, no meta-commentary.";
 
 async function getEmailContent(account: string, mailbox: string, messageId: string): Promise<string> {
-  return runScript("get_message", [account, mailbox, messageId]);
+  // Neutralize any <email> markers the body embeds so it can't break out of the
+  // delimiter fence and inject instructions into the model.
+  return neutralizeEmailMarkers(await runScript("get_message", [account, mailbox, messageId]));
 }
 
 export function registerAITools(server: McpServer): void {

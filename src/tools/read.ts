@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
-import { runScript, parseMessageRef, textContent } from "../applescript-runner.js";
+import { runScript, parseMessageRef, textContent, untrustedContent } from "../applescript-runner.js";
 
 export function registerReadTools(server: McpServer): void {
   server.tool(
@@ -24,7 +24,7 @@ export function registerReadTools(server: McpServer): void {
       }
       const { account, mailbox, messageId } = ref;
       const raw = await runScript("get_message", [account, mailbox, messageId]);
-      return textContent(raw);
+      return untrustedContent(raw, "Full content of the requested email.");
     }
   );
 }

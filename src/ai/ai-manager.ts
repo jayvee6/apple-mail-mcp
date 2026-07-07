@@ -12,7 +12,13 @@ import { FoundationProvider } from "./foundation-provider.js";
 function isLocalEndpoint(url: string): boolean {
   try {
     const { hostname } = new URL(url);
-    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1";
+    // WHATWG URL exposes an IPv6 host in bracketed form ("[::1]"), so match both.
+    return (
+      hostname === "localhost" ||
+      hostname === "127.0.0.1" ||
+      hostname === "::1" ||
+      hostname === "[::1]"
+    );
   } catch {
     return false;
   }

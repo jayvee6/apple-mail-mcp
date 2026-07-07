@@ -203,10 +203,19 @@ export function registerOrganizeTools(server: McpServer): void {
         ),
     },
     async ({ src_account, src_mailbox, dest_account, dest_mailbox, from_filter, subject_filter, after_date, before_date, limit }) => {
-      // Safety: require at least one filter so an empty call can never bulk-move a whole mailbox.
-      if (!from_filter && !subject_filter && !after_date && !before_date) {
+      // Safety: require at least one MEANINGFUL filter so an empty (or whitespace-only)
+      // call can never bulk-move a whole mailbox. A lone space in from_filter would
+      // otherwise pass a truthiness check yet match `sender contains " "` — i.e.
+      // nearly every message. Require a filter with real, non-trivial content.
+      const from = from_filter?.trim() ?? "";
+      const subject = subject_filter?.trim() ?? "";
+      const after = after_date?.trim() ?? "";
+      const before = before_date?.trim() ?? "";
+      if (from.length < 2 && subject.length < 2 && !after && !before) {
         return textContent(
-          "ERROR: At least one filter (from_filter, subject_filter, after_date, before_date) is required."
+          "ERROR: Provide at least one substantive filter — from_filter or subject_filter " +
+            "must be at least 2 non-whitespace characters, or supply after_date / before_date. " +
+            "This guards against accidentally moving an entire mailbox."
         );
       }
       const raw = await runScript(
@@ -214,10 +223,10 @@ export function registerOrganizeTools(server: McpServer): void {
         [
           src_account,
           src_mailbox,
-          from_filter ?? "",
-          subject_filter ?? "",
-          after_date ?? "",
-          before_date ?? "",
+          from,
+          subject,
+          after,
+          before,
           dest_account,
           dest_mailbox,
           String(limit ?? 0),

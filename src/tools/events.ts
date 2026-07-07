@@ -1,6 +1,6 @@
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { drainEvents } from "../event-queue.js";
-import { textContent } from "../applescript-runner.js";
+import { untrustedContent } from "../applescript-runner.js";
 
 export function registerEventTools(server: McpServer): void {
   server.tool(
@@ -11,7 +11,10 @@ export function registerEventTools(server: McpServer): void {
     {},
     async () => {
       const events = drainEvents();
-      return textContent(JSON.stringify(events, null, 2));
+      return untrustedContent(
+        JSON.stringify(events, null, 2),
+        "Real-time incoming mail events; subject/from/preview are attacker-controlled."
+      );
     }
   );
 }
