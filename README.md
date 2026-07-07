@@ -1,5 +1,9 @@
 # apple-mail-mcp
 
+<p align="center">
+  <img src="assets/icon.gif" alt="apple-mail-mcp animated icon" width="160" height="160">
+</p>
+
 **The only way to give Claude (or any LLM) access to Apple Mail and iCloud.**
 
 Gmail and Outlook have APIs. iCloud doesn't. If you're a Mac user whose email lives in Apple Mail — iCloud, iCloud+, or any account synced through it — there's no web API an LLM can call. This server bridges that gap using AppleScript on your local machine.
