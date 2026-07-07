@@ -149,4 +149,84 @@ export function registerOrganizeTools(server: McpServer): void {
       return textContent(raw);
     }
   );
+
+  server.tool(
+    "create_folder",
+    "Create a new top-level mailbox/folder inside an account. Idempotent — reports success if the folder already exists. " +
+      "Pair with move_matching to file mail by rule.",
+    {
+      account: z.string().describe('Account to create the folder in, e.g. "iCloud". Use list_folders to see accounts.'),
+      name: z.string().describe('Name of the new folder, e.g. "Newsletters".'),
+    },
+    async ({ account, name }) => {
+      const raw = await runScript("create_mailbox", [account, name]);
+      return textContent(raw);
+    }
+  );
+
+  server.tool(
+    "move_matching",
+    "Bulk-move every email in a source mailbox that matches the given criteria into a destination mailbox, in one pass. " +
+      "Each call matches a single from/subject substring; to file a sender that spans several unrelated addresses, " +
+      "issue one call per address into the same folder. " +
+      "At least one filter (from_filter, subject_filter, after_date, before_date) is required — this guards against " +
+      "accidentally moving an entire mailbox. The destination must already exist (call create_folder first if needed). " +
+      "Omit limit to move ALL matches (fast native bulk move); set limit to cap the count (slower, per-message). " +
+      "Returns the number of messages moved. On very large mailboxes this can take a few minutes.",
+    {
+      src_account: z.string().describe('Source account to scan, e.g. "iCloud".'),
+      src_mailbox: z.string().default("INBOX").describe('Source mailbox to scan. Defaults to "INBOX".'),
+      dest_account: z.string().describe('Destination account, e.g. "iCloud".'),
+      dest_mailbox: z
+        .string()
+        .describe("Destination mailbox name. Must already exist — call create_folder first if needed."),
+      from_filter: z
+        .string()
+        .optional()
+        .describe(
+          'Substring match on the sender — display name OR address, case-insensitive. E.g. "crypto.com" matches ' +
+            'both "news.crypto.com" addresses and a "Crypto.com" display name. A sender using several unrelated ' +
+            "addresses with no shared substring needs one call per address into the same folder."
+        ),
+      subject_filter: z.string().optional().describe("Substring match on subject line."),
+      after_date: z.string().optional().describe('Only move messages received after this date. ISO 8601: "YYYY-MM-DD".'),
+      before_date: z.string().optional().describe('Only move messages received before this date. ISO 8601: "YYYY-MM-DD".'),
+      limit: z
+        .number()
+        .int()
+        .min(1)
+        .max(5000)
+        .optional()
+        .describe(
+          "Optional cap on how many messages to move. Omit to move ALL matches (fast native bulk move); " +
+            "set to move at most N (slower, per-message)."
+        ),
+    },
+    async ({ src_account, src_mailbox, dest_account, dest_mailbox, from_filter, subject_filter, after_date, before_date, limit }) => {
+      // Safety: require at least one filter so an empty call can never bulk-move a whole mailbox.
+      if (!from_filter && !subject_filter && !after_date && !before_date) {
+        return textContent(
+          "ERROR: At least one filter (from_filter, subject_filter, after_date, before_date) is required."
+        );
+      }
+      const raw = await runScript(
+        "move_matching",
+        [
+          src_account,
+          src_mailbox,
+          from_filter ?? "",
+          subject_filter ?? "",
+          after_date ?? "",
+          before_date ?? "",
+          dest_account,
+          dest_mailbox,
+          String(limit ?? 0),
+        ],
+        // Large mailboxes: the whose-scan over 30k+ messages (and, in the capped
+        // path, per-message moves) can take minutes, well past the default 30s.
+        { timeoutMs: 600_000 }
+      );
+      return textContent(raw);
+    }
+  );
 }

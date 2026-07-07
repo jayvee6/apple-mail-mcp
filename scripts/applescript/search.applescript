@@ -42,6 +42,9 @@ on run argv
 	set resultCount to 0
 
 	tell application "Mail"
+		-- Guard against the ~2min AppleEvent timeout on large or syncing mailboxes:
+		-- a whose-scan can otherwise fail with -1712 and silently return nothing.
+		with timeout of 170 seconds
 		-- Build list of accounts to search
 		set acctList to {}
 		if acctName = "ALL" then
@@ -113,6 +116,7 @@ on run argv
 			end repeat
 			if resultCount >= limitNum then exit repeat
 		end repeat
+		end timeout
 	end tell
 	return output
 end run
