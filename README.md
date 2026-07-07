@@ -1,7 +1,7 @@
 # apple-mail-mcp
 
 <p align="center">
-  <img src="assets/icon.gif" alt="apple-mail-mcp animated icon" width="160" height="160">
+  <img src="assets/icon.gif" alt="apple-mail-mcp animated icon" width="320" height="320">
 </p>
 
 **The only way to give Claude (or any LLM) access to Apple Mail and iCloud.**
