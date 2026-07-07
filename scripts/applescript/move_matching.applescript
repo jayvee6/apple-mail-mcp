@@ -24,6 +24,10 @@ on isoToDate(isoStr)
 	set mo to (text 6 thru 7 of isoStr) as integer
 	set dy to (text 9 thru 10 of isoStr) as integer
 	set d to current date
+	-- Reset day first: if today is the 29th–31st, assigning the month while the
+	-- day is out of range rolls the date into the next month (Feb 31 → Mar 3),
+	-- so year/month/day must be applied against a safe day-of-month.
+	set day of d to 1
 	set year of d to yr
 	set month of d to mo
 	set day of d to dy
