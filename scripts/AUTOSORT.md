@@ -12,20 +12,27 @@ folder for this one email" but flaky at free-form multi-step tool use.
 ## 1. LM Studio
 
 1. Open **LM Studio → Developer (the `</>` tab) → Start Server.**
-   Confirm the address matches `http://192.168.0.231:1234` (your reported URL).
-   If it's running on the *same* Mac as Apple Mail you can also use
-   `http://localhost:1234`.
+   Run it on the **same Mac as Apple Mail** so the default `http://localhost:1234`
+   works and your mail metadata never leaves the machine.
+   To use a model on *another* box, see "Sending to a remote model" below — the
+   script refuses a non-local endpoint unless you explicitly acknowledge it.
 2. **Load your Gemma model** (the one you already have). Note its id — shown in
    the server panel and at `GET /v1/models`. The script auto-detects the first
    loaded model, so you don't have to type it.
 3. Smoke-test from the Mac that will run the sorter:
 
    ```bash
-   curl http://192.168.0.231:1234/v1/models
+   curl http://localhost:1234/v1/models
    ```
 
    You should get JSON with your model's `id`. If this fails, nothing else will
-   work — fix the server/firewall first.
+   work — fix the server first.
+
+> **Privacy note.** By default this script talks only to `localhost` and logs
+> message-ids, not subjects/senders. It sends each inbox message's **subject and
+> sender** (never the body) to the model to pick a folder — so pointing it at a
+> non-local endpoint sends that metadata off-device. That path is gated: see
+> "Sending to a remote model."
 
 ## 2. Preview (dry run — safe, default)
 
@@ -79,7 +86,9 @@ permission is granted to the launchd process.
 
 | Var | Default | Meaning |
 |-----|---------|---------|
-| `LMSTUDIO_URL` | `http://192.168.0.231:1234` | LM Studio OpenAI-compatible base URL |
+| `LMSTUDIO_URL` | `http://localhost:1234` | LM Studio OpenAI-compatible base URL (must be loopback unless `AUTOSORT_ALLOW_REMOTE=1`) |
+| `AUTOSORT_ALLOW_REMOTE` | — | set `1` to permit a non-local `LMSTUDIO_URL` (acknowledges that subjects + senders leave the machine) |
+| `AUTOSORT_VERBOSE` | — | set `1` to log subjects/senders (otherwise logs message-ids only) |
 | `LMSTUDIO_MODEL` | auto-detect | pin a specific model id |
 | `LMSTUDIO_API_KEY` | — | optional bearer token |
 | `ACCOUNTS` | `iCloud,Google` | Mail account names to sort |
@@ -87,7 +96,18 @@ permission is granted to the launchd process.
 | `MAX_PER_ACCOUNT` | `0` | cap emails per account (0 = all) |
 | `PAGE_SIZE` | `50` | inbox fetch page size |
 | `TEMPERATURE` | `0` | model sampling temp |
-| `LOG_FILE` | `~/Library/Logs/apple-mail-autosort.log` | extra log sink |
+| `LOG_FILE` | `~/Library/Logs/apple-mail-autosort.log` | log sink (written `0600`, owner-only) |
+
+## Sending to a remote model
+
+Running the model on another machine sends every inbox message's subject + sender
+over the network. The script refuses this by default. To opt in:
+
+```bash
+LMSTUDIO_URL=http://<host>:1234 AUTOSORT_ALLOW_REMOTE=1 node scripts/auto-sort.mjs
+```
+
+Prefer a host you control on a trusted network, and ideally an `https://` endpoint.
 
 ## Gotchas
 
@@ -99,7 +119,7 @@ permission is granted to the launchd process.
   the sorter clear Gmail as well; ask if you want that change.
 - **Permissions:** the runner needs Automation access to Mail (and Mail must be
   running). Grant it on the first manual run.
-- **Don't point the MCP's built-in AI tools at this LAN box without
+- **Don't point the MCP's built-in AI tools at a remote box without
   `APPLE_MAIL_AI_ALLOW_REMOTE=1`** — see below.
 
 ## Optional: also run the MCP's own AI tools on this LM Studio
@@ -109,9 +129,9 @@ to use the same model, set these env vars for the **MCP server** process:
 
 ```bash
 APPLE_MAIL_AI_PROVIDER=openai          # use the OpenAI-compatible path (/v1/chat/completions)
-APPLE_MAIL_AI_ENDPOINT=http://192.168.0.231:1234
+APPLE_MAIL_AI_ENDPOINT=http://localhost:1234
 APPLE_MAIL_AI_MODEL=<your model id>
-APPLE_MAIL_AI_ALLOW_REMOTE=1           # required: 192.168.x.x is not localhost
+# APPLE_MAIL_AI_ALLOW_REMOTE=1         # only needed if the endpoint above is NOT localhost
 ```
 
 Use `openai`, **not** `lmstudio`: the built-in `lmstudio` provider posts to

@@ -42,7 +42,10 @@ const execFileAsync = promisify(execFile);
 const SCRIPTS_DIR = join(dirname(fileURLToPath(import.meta.url)), "applescript");
 
 // ----- config -----------------------------------------------------------------
-const LMSTUDIO_URL = (process.env.LMSTUDIO_URL ?? "http://192.168.0.231:1234").replace(/\/$/, "");
+// Default to on-device (localhost). A non-loopback endpoint sends your inbox
+// subjects + senders off this machine, so it is refused unless you explicitly
+// acknowledge with AUTOSORT_ALLOW_REMOTE=1 (mirrors the MCP server's guard).
+const LMSTUDIO_URL = (process.env.LMSTUDIO_URL ?? "http://localhost:1234").replace(/\/$/, "");
 const LMSTUDIO_API_KEY = process.env.LMSTUDIO_API_KEY ?? "";
 let LMSTUDIO_MODEL = process.env.LMSTUDIO_MODEL ?? "";
 const ACCOUNTS = (process.env.ACCOUNTS ?? "iCloud,Google").split(",").map((s) => s.trim()).filter(Boolean);
@@ -51,6 +54,21 @@ const MAX_PER_ACCOUNT = parseInt(process.env.MAX_PER_ACCOUNT ?? "0", 10) || 0;
 const PAGE_SIZE = parseInt(process.env.PAGE_SIZE ?? "50", 10) || 50;
 const TEMPERATURE = Number(process.env.TEMPERATURE ?? "0");
 const LOG_FILE = process.env.LOG_FILE ?? join(homedir(), "Library", "Logs", "apple-mail-autosort.log");
+// Logs record message-ids by default. Subjects/senders are PII, so they are
+// only written when AUTOSORT_VERBOSE=1 (useful for tuning the prompt).
+const VERBOSE = process.env.AUTOSORT_VERBOSE === "1";
+
+// A URL is "local" only if its host is loopback. Mirrors isLocalEndpoint in
+// src/ai/ai-manager.ts; keep both in sync. IPv6 loopback URLs expose the host
+// as "[::1]", so match that literal form too.
+function isLocalEndpoint(url) {
+  try {
+    const { hostname } = new URL(url);
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "::1" || hostname === "[::1]";
+  } catch {
+    return false;
+  }
+}
 
 // Mailboxes that are never valid destinations (system / provider-managed).
 const SYSTEM_MAILBOXES = new Set(
@@ -66,7 +84,15 @@ try { mkdirSync(dirname(LOG_FILE), { recursive: true }); } catch {}
 function log(line) {
   const stamped = `${new Date().toISOString()}  ${line}`;
   console.log(stamped);
-  try { appendFileSync(LOG_FILE, stamped + "\n"); } catch {}
+  // 0600: the log can name your correspondents, so keep it owner-only.
+  try { appendFileSync(LOG_FILE, stamped + "\n", { mode: 0o600 }); } catch {}
+}
+
+// A per-email log label. Subjects/senders are only revealed under AUTOSORT_VERBOSE=1;
+// otherwise we log the (non-PII) message-id so runs stay debuggable without
+// persisting who mailed whom.
+function label(email) {
+  return VERBOSE ? `${truncate(email.subject)}  <${email.sender}>` : `msg ${email.messageId}`;
 }
 
 // ----- AppleScript helpers ----------------------------------------------------
@@ -168,6 +194,19 @@ function resolveChoice(reply, folders) {
 
 // ----- main -------------------------------------------------------------------
 async function main() {
+  // Refuse to send mail metadata off-device unless explicitly acknowledged.
+  if (!isLocalEndpoint(LMSTUDIO_URL) && process.env.AUTOSORT_ALLOW_REMOTE !== "1") {
+    log(
+      `REFUSING: LMSTUDIO_URL (${LMSTUDIO_URL}) is not local. Sorting every inbox ` +
+      `message's subject + sender to a remote host would send that data off this machine. ` +
+      `Set AUTOSORT_ALLOW_REMOTE=1 to acknowledge, or use a localhost endpoint.`
+    );
+    process.exit(2);
+  }
+  if (!isLocalEndpoint(LMSTUDIO_URL)) {
+    log(`WARNING: remote endpoint ${LMSTUDIO_URL} — inbox subjects + senders will be sent off-device.`);
+  }
+
   log(`=== apple-mail auto-sort  (DRY_RUN=${DRY_RUN ? "1" : "0"}) ===`);
   log(`LM Studio: ${LMSTUDIO_URL}`);
 
@@ -200,27 +239,27 @@ async function main() {
           choice = resolveChoice(reply, folders);
         } catch (err) {
           failed++;
-          log(`  ✗ model error on "${truncate(email.subject)}": ${err.message}`);
+          log(`  ✗ model error on ${label(email)}: ${err.message}`);
           continue;
         }
 
         if (!choice) {
           kept++;
-          log(`  · KEEP   ${truncate(email.subject)}  <${email.sender}>`);
+          log(`  · KEEP   ${label(email)}`);
           continue;
         }
 
         if (DRY_RUN) {
           moved++; perFolder[choice] = (perFolder[choice] ?? 0) + 1;
-          log(`  → [DRY] ${choice.padEnd(22)} ${truncate(email.subject)}`);
+          log(`  → [DRY] ${choice.padEnd(22)} ${label(email)}`);
         } else {
           try {
             await moveMessage(account, email.messageId, choice);
             moved++; perFolder[choice] = (perFolder[choice] ?? 0) + 1;
-            log(`  → ${choice.padEnd(22)} ${truncate(email.subject)}`);
+            log(`  → ${choice.padEnd(22)} ${label(email)}`);
           } catch (err) {
             failed++;
-            log(`  ✗ move failed "${truncate(email.subject)}" → ${choice}: ${err.message}`);
+            log(`  ✗ move failed ${label(email)} → ${choice}: ${err.message}`);
           }
         }
       }

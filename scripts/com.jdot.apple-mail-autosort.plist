@@ -29,11 +29,15 @@
 
   <key>EnvironmentVariables</key>
   <dict>
-    <key>LMSTUDIO_URL</key>   <string>http://192.168.0.231:1234</string>
+    <!-- On-device by default. To use a model on another machine you must both
+         point this at it AND add  <key>AUTOSORT_ALLOW_REMOTE</key><string>1</string>
+         below — otherwise the script refuses to send mail metadata off-device. -->
+    <key>LMSTUDIO_URL</key>   <string>http://localhost:1234</string>
     <!-- Pin a model id if you don't want auto-detect:
     <key>LMSTUDIO_MODEL</key> <string>gemma-3-4b-it</string> -->
     <key>ACCOUNTS</key>      <string>iCloud,Google</string>
-    <key>DRY_RUN</key>       <string>0</string>
+    <!-- Ships as a dry run. Flip to "0" ONLY after a manual dry run looks right. -->
+    <key>DRY_RUN</key>       <string>1</string>
   </dict>
 
   <!-- Run daily at 07:00 local time. -->
@@ -43,8 +47,13 @@
     <key>Minute</key><integer>0</integer>
   </dict>
 
+  <!-- The script writes its own owner-only (0600) log to
+       ~/Library/Logs/apple-mail-autosort.log. We deliberately do NOT redirect
+       stdout/stderr into world-readable /tmp. If you want launchd's raw
+       stdout too, point these at an absolute path under your own ~/Library/Logs
+       (TODO: replace <YOU> with your username) — never /tmp on a shared Mac. -->
   <key>RunAtLoad</key>       <false/>
-  <key>StandardOutPath</key> <string>/tmp/apple-mail-autosort.out.log</string>
-  <key>StandardErrorPath</key><string>/tmp/apple-mail-autosort.err.log</string>
+  <key>StandardOutPath</key> <string>/Users/&lt;YOU&gt;/Library/Logs/apple-mail-autosort.launchd.log</string>
+  <key>StandardErrorPath</key><string>/Users/&lt;YOU&gt;/Library/Logs/apple-mail-autosort.launchd.log</string>
 </dict>
 </plist>
