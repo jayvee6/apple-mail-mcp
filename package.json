@@ -1,6 +1,6 @@
 {
   "name": "@jdot6/apple-mail-mcp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The only way to give Claude (or any LLM) access to Apple Mail and iCloud — local AppleScript bridge for macOS",
   "main": "dist/index.js",
   "bin": {
