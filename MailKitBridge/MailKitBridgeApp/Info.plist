@@ -24,6 +24,11 @@
     <string>1</string>
     <key>LSMinimumSystemVersion</key>
     <string>$(MACOSX_DEPLOYMENT_TARGET)</string>
+    <!-- Uses only Apple-provided TLS (URLSession) and cleartext loopback HTTP —
+         no proprietary/non-exempt encryption. Declaring this avoids the manual
+         export-compliance prompt on every App Store Connect upload. -->
+    <key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
     <key>NSHumanReadableCopyright</key>
     <string>Copyright © 2026 Jose Villarreal. All rights reserved.</string>
     <key>NSPrincipalClass</key>

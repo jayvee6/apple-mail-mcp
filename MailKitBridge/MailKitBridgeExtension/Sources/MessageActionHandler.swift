@@ -45,10 +45,13 @@ class MessageActionHandler: NSObject, MEMessageActionHandler {
 
         let receivedAt = ISO8601DateFormatter().string(from: Date())
 
-        let preview = extractPreview(from: rawData)
+        let isEncrypted = message.encryptionState == .encrypted
+        let encryptionState: String? = isEncrypted ? "encrypted" : nil
 
-        let encryptionState: String? =
-            message.encryptionState == .encrypted ? "encrypted" : nil
+        // Never emit a body preview for encrypted mail. rawData for an encrypted
+        // message is the protected payload; previewing it risks leaking decrypted
+        // plaintext (or shipping meaningless ciphertext) over the local socket.
+        let preview = isEncrypted ? "" : extractPreview(from: rawData)
 
         EventPoster.post(MailEvent(
             subject: subject,
