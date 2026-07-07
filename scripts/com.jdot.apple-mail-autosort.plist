@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  launchd job: run the local Gemma-driven inbox sorter once a day.
+
+  BEFORE LOADING, edit the two paths marked TODO:
+    • the node binary  (run `which node` in Terminal — on Apple-Silicon Homebrew
+      it's usually /opt/homebrew/bin/node)
+    • the absolute path to auto-sort.mjs
+
+  Install:
+    cp scripts/com.jdot.apple-mail-autosort.plist ~/Library/LaunchAgents/
+    launchctl load ~/Library/LaunchAgents/com.jdot.apple-mail-autosort.plist
+  Disable:
+    launchctl unload ~/Library/LaunchAgents/com.jdot.apple-mail-autosort.plist
+
+  Note: this is set to DRY_RUN=0 (it will actually move mail). Test by hand first
+  (see AUTOSORT.md) so macOS grants the Automation permission to control Mail.
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.jdot.apple-mail-autosort</string>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>/opt/homebrew/bin/node</string>                                   <!-- TODO: `which node` -->
+    <string>/Users/jdot/Documents/Development/apple-mail-mcp/scripts/auto-sort.mjs</string>  <!-- TODO: confirm path -->
+  </array>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LMSTUDIO_URL</key>   <string>http://192.168.0.231:1234</string>
+    <!-- Pin a model id if you don't want auto-detect:
+    <key>LMSTUDIO_MODEL</key> <string>gemma-3-4b-it</string> -->
+    <key>ACCOUNTS</key>      <string>iCloud,Google</string>
+    <key>DRY_RUN</key>       <string>0</string>
+  </dict>
+
+  <!-- Run daily at 07:00 local time. -->
+  <key>StartCalendarInterval</key>
+  <dict>
+    <key>Hour</key><integer>7</integer>
+    <key>Minute</key><integer>0</integer>
+  </dict>
+
+  <key>RunAtLoad</key>       <false/>
+  <key>StandardOutPath</key> <string>/tmp/apple-mail-autosort.out.log</string>
+  <key>StandardErrorPath</key><string>/tmp/apple-mail-autosort.err.log</string>
+</dict>
+</plist>
