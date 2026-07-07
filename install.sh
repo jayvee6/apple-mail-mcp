@@ -110,6 +110,10 @@ if "mcpServers" not in config:
 # `npm publish`ed) and would silently start an older build missing newer tools.
 # npx also buys no portability: it lives next to node_bin, so it is exactly as
 # path-bound as node_bin itself.
+if not os.path.isfile(dist_path):
+    print(f"ERROR: built artifact not found at {dist_path}", file=sys.stderr)
+    sys.exit(1)
+
 config["mcpServers"]["apple-mail"] = {
     "command": node_bin,
     "args": [dist_path]
