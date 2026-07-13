@@ -89,13 +89,19 @@ export function registerRuleTools(server: McpServer): void {
       if (apply_to_existing) {
         for (const d of normalized) {
           try {
-            const mv = await runScript(
-              "move_matching",
-              [account, src_mailbox, "@" + d, "", "", "", account, dest_mailbox, "0"],
-              { timeoutMs: 600_000 }
-            );
-            const m = mv.match(/Moved\s+(\d+)/);
-            const cnt = m ? parseInt(m[1], 10) : 0;
+            // Two passes per domain — "@domain" (apex) and ".domain" (subdomains) —
+            // mirroring the rule's condition pair. The sets are disjoint, so no
+            // message is moved twice.
+            let cnt = 0;
+            for (const filter of ["@" + d, "." + d]) {
+              const mv = await runScript(
+                "move_matching",
+                [account, src_mailbox, filter, "", "", "", account, dest_mailbox, "0"],
+                { timeoutMs: 600_000 }
+              );
+              const m = mv.match(/Moved\s+(\d+)/);
+              cnt += m ? parseInt(m[1], 10) : 0;
+            }
             moved[d] = cnt;
             totalMoved += cnt;
           } catch {
@@ -148,10 +154,7 @@ export function registerRuleTools(server: McpServer): void {
         const doms =
           !domains || domains === "-"
             ? "(no from-address conditions)"
-            : domains
-                .split(",")
-                .map((x) => x.replace(/^@/, ""))
-                .join(", ");
+            : [...new Set(domains.split(",").map((x) => x.replace(/^[@.]/, "")))].join(", ");
         out.push(`• ${rName}  [${state}, ${target}]`);
         out.push(`    from: ${doms}`);
       }

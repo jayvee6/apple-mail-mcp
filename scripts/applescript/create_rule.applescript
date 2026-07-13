@@ -52,12 +52,19 @@ on run argv
 			-- Create the rule with OR-combined domain conditions.
 			set theRule to make new rule with properties {name:ruleName, enabled:true}
 			set all conditions must be met of theRule to false
+			set addedDomains to 0
 			set addedConds to 0
 			repeat with d in domainList
 				set dText to (d as text)
 				if dText is not "" then
+					-- Two OR-conditions per domain so BOTH the apex (foo@crypto.com)
+					-- and any subdomain (foo@news.crypto.com) match — without false
+					-- positives like "notcrypto.com". Mail rules have no regex, so
+					-- this is the precise substring pair: "@domain" + ".domain".
 					make new rule condition at end of rule conditions of theRule with properties {rule type:from header, qualifier:does contain value, expression:"@" & dText}
-					set addedConds to addedConds + 1
+					make new rule condition at end of rule conditions of theRule with properties {rule type:from header, qualifier:does contain value, expression:"." & dText}
+					set addedDomains to addedDomains + 1
+					set addedConds to addedConds + 2
 				end if
 			end repeat
 			if addedConds is 0 then
@@ -83,7 +90,7 @@ on run argv
 				return "ERROR: rule did not persist correctly (moveSet=" & okMove & ", shouldMove=" & shouldMoveVal & ", conds=" & nConds & "/" & addedConds & "). No rule left behind."
 			end if
 
-			return "OK|rule=" & ruleName & "|dest=" & acctName & "/" & destMbox & "|domains=" & addedConds & "|replaced=" & replacedCount & "|enabled=true"
+			return "OK|rule=" & ruleName & "|dest=" & acctName & "/" & destMbox & "|domains=" & addedDomains & "|conds=" & addedConds & "|replaced=" & replacedCount & "|enabled=true"
 		end tell
 	end timeout
 end run
