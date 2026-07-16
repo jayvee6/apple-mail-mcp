@@ -17,9 +17,12 @@ targets:
   MailKitBridgeApp:
     type: application
     platform: macOS
+    # XcodeGen has no `resources:` key — resource files (asset catalogs,
+    # privacy manifests) go under `sources:` and are auto-routed to the
+    # Resources build phase by file type. Listing them under `resources:`
+    # silently drops them from the bundle (no icon, no privacy manifest).
     sources:
       - path: MailKitBridgeApp/Sources
-    resources:
       - path: MailKitBridgeApp/Assets.xcassets
       - path: MailKitBridgeApp/PrivacyInfo.xcprivacy
     dependencies:
@@ -40,8 +43,8 @@ targets:
     platform: macOS
     sources:
       - path: MailKitBridgeExtension/Sources
-    resources:
-      - path: MailKitBridgeExtension/Resources/Info.plist
+      # Info.plist is consumed via INFOPLIST_FILE below — not bundled as a
+      # resource. The privacy manifest must ship in the appex.
       - path: MailKitBridgeExtension/Resources/PrivacyInfo.xcprivacy
     settings:
       base:

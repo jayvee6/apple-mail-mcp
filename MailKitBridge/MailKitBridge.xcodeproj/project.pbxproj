@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		025F4ACFA132A8B02504A4AB /* MailKitBridgeExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1584F0CC8DD73FC944BB3F09 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 043CC149D4C5A2CC8FC9728C /* PrivacyInfo.xcprivacy */; };
+		2326B471BFD4529C757DCE55 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 736520491F36AA076B419A61 /* PrivacyInfo.xcprivacy */; };
 		3C83D6E45A2BAE87DB76CDB0 /* MailKitBridgeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D591F49DA95AA01B7871A0B /* MailKitBridgeExtension.swift */; };
 		53AAE78EB65BA8EEF07BEA7A /* MailKitBridgeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10E960C3366D1AD56D271C1 /* MailKitBridgeApp.swift */; };
 		67E86A17D2F443F5AA29B6B5 /* MessageActionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B6121CE219B925D1B5E8FE6 /* MessageActionHandler.swift */; };
+		A3CC43C987BF60614E60DBD1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 19986871A086A1BAA57AC932 /* Assets.xcassets */; };
 		BE1264659C8150E307420B52 /* EventPoster.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59BF0BC4C0AE31ED71912BA0 /* EventPoster.swift */; };
 		C28DE6FE32F8FA3A5D3849A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FBAE1D4B59870B3674EE90B /* ContentView.swift */; };
 /* End PBXBuildFile section */
@@ -41,10 +44,13 @@
 
 /* Begin PBXFileReference section */
 		01FE32BD2C9022A71DF35287 /* MailKitBridgeApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MailKitBridgeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		043CC149D4C5A2CC8FC9728C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		19986871A086A1BAA57AC932 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		354423C91C2448E4FCDE7D54 /* MailKitBridgeExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MailKitBridgeExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		59BF0BC4C0AE31ED71912BA0 /* EventPoster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventPoster.swift; sourceTree = "<group>"; };
 		5D591F49DA95AA01B7871A0B /* MailKitBridgeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailKitBridgeExtension.swift; sourceTree = "<group>"; };
 		6B6121CE219B925D1B5E8FE6 /* MessageActionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageActionHandler.swift; sourceTree = "<group>"; };
+		736520491F36AA076B419A61 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		7FBAE1D4B59870B3674EE90B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C10E960C3366D1AD56D271C1 /* MailKitBridgeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MailKitBridgeApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -72,6 +78,8 @@
 		75793CC9E8091DDB12D1394D = {
 			isa = PBXGroup;
 			children = (
+				FF05FB5040F86BD176488D92 /* MailKitBridgeApp */,
+				F4E783B4CF180ACED10C0B39 /* Resources */,
 				2D34AB6A83EFD8666E2F1DE1 /* Sources */,
 				8520484F240EFC0D1B4802BA /* Sources */,
 				2448FE1F229F1B3BFC502CCB /* Products */,
@@ -89,6 +97,24 @@
 			path = MailKitBridgeExtension/Sources;
 			sourceTree = "<group>";
 		};
+		F4E783B4CF180ACED10C0B39 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				043CC149D4C5A2CC8FC9728C /* PrivacyInfo.xcprivacy */,
+			);
+			name = Resources;
+			path = MailKitBridgeExtension/Resources;
+			sourceTree = "<group>";
+		};
+		FF05FB5040F86BD176488D92 /* MailKitBridgeApp */ = {
+			isa = PBXGroup;
+			children = (
+				19986871A086A1BAA57AC932 /* Assets.xcassets */,
+				736520491F36AA076B419A61 /* PrivacyInfo.xcprivacy */,
+			);
+			path = MailKitBridgeApp;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -97,6 +123,7 @@
 			buildConfigurationList = 2D116A7A488F99ACFE631004 /* Build configuration list for PBXNativeTarget "MailKitBridgeExtension" */;
 			buildPhases = (
 				D8E553FC80F59034B32DDFCD /* Sources */,
+				BE1A9678584B642097556A6E /* Resources */,
 			);
 			buildRules = (
 			);
@@ -114,6 +141,7 @@
 			buildConfigurationList = 5220669676737AC7DC6B3994 /* Build configuration list for PBXNativeTarget "MailKitBridgeApp" */;
 			buildPhases = (
 				DA1781D6B75A77F62D9E840D /* Sources */,
+				9BC748F632CD4CF648BAA69C /* Resources */,
 				9510A44D54DC426CE1654541 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
@@ -166,6 +194,26 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9BC748F632CD4CF648BAA69C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A3CC43C987BF60614E60DBD1 /* Assets.xcassets in Resources */,
+				2326B471BFD4529C757DCE55 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		BE1A9678584B642097556A6E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1584F0CC8DD73FC944BB3F09 /* PrivacyInfo.xcprivacy in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D8E553FC80F59034B32DDFCD /* Sources */ = {
