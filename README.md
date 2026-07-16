@@ -32,6 +32,9 @@ Built on [AppleScript](https://developer.apple.com/library/archive/documentation
 | `flag_email` | Set or clear the flag on a message |
 | `mark_read` | Mark a message as read or unread |
 | `delete_email` | Move to Deleted Messages (iCloud) or Trash (Gmail) |
+| `create_rule` | Create a native Mail rule filing sender domains into a folder (optionally sort existing mail too) |
+| `list_rules` | List all Mail rules with their move-target folder and matched sender domains |
+| `delete_rule` | Delete a Mail rule by name |
 | `get_pending_events` | Drain real-time new-mail events from the MailKit bridge |
 | `summarize_email` | Summarize a message in 2-3 sentences via local AI |
 | `classify_email` | Classify by category, priority, and action-required via local AI |

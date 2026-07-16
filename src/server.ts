@@ -6,6 +6,7 @@ import { registerComposeTools } from "./tools/compose.js";
 import { registerOrganizeTools } from "./tools/organize.js";
 import { registerEventTools } from "./tools/events.js";
 import { registerAITools } from "./tools/ai.js";
+import { registerRuleTools } from "./tools/rules.js";
 
 export const server = new McpServer({
   name: "apple-mail",
@@ -19,3 +20,4 @@ registerComposeTools(server);
 registerOrganizeTools(server);
 registerEventTools(server);
 registerAITools(server);
+registerRuleTools(server);
