@@ -101,19 +101,23 @@ if os.path.exists(config_path):
 if "mcpServers" not in config:
     config["mcpServers"] = {}
 
-# Use npx so the config stays valid regardless of node path or future moves.
-# Falls back to local build path if npx isn't available.
-npx_bin = os.path.join(os.path.dirname(node_bin), "npx")
-if os.path.isfile(npx_bin):
-    config["mcpServers"]["apple-mail"] = {
-        "command": npx_bin,
-        "args": ["-y", "@jdot6/apple-mail-mcp"]
-    }
-else:
-    config["mcpServers"]["apple-mail"] = {
-        "command": node_bin,
-        "args": [dist_path]
-    }
+# Point Claude at the local build we just produced. This is the authoritative
+# artifact: the installer cloned + built the current source, so dist_path always
+# matches this repo's HEAD.
+#
+# Do NOT use `npx @jdot6/apple-mail-mcp` here — npx fetches the last *published*
+# npm release, which can lag the source (e.g. a merged PR that was never
+# `npm publish`ed) and would silently start an older build missing newer tools.
+# npx also buys no portability: it lives next to node_bin, so it is exactly as
+# path-bound as node_bin itself.
+if not os.path.isfile(dist_path):
+    print(f"ERROR: built artifact not found at {dist_path}", file=sys.stderr)
+    sys.exit(1)
+
+config["mcpServers"]["apple-mail"] = {
+    "command": node_bin,
+    "args": [dist_path]
+}
 
 with open(config_path, "w") as f:
     json.dump(config, f, indent=2)
