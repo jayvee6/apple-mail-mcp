@@ -52,7 +52,7 @@ function buildProvider(): AIProvider {
   switch (type) {
     case "lmstudio": {
       const model = process.env.APPLE_MAIL_AI_MODEL ?? "gemma-4-it";
-      return new LMStudioProvider(endpoint, model, 8192, apiKey);
+      return new LMStudioProvider(endpoint, model, apiKey);
     }
     case "openai":
     case "openai-compat": {
