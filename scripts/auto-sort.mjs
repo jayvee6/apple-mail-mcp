@@ -26,6 +26,8 @@
 //   MAX_PER_ACCOUNT  cap emails processed per account (0 = no cap). default: 0
 //   PAGE_SIZE        inbox fetch page size. default: 50
 //   TEMPERATURE      sampling temp for the model. default: 0
+//   MAX_TOKENS       completion budget per email. default: 512 — reasoning models
+//                    (Gemma 4, gpt-oss) spend most of it thinking before answering
 //   LOG_FILE         append log here too. default: ~/Library/Logs/apple-mail-autosort.log
 //
 // Run a safe preview:   node scripts/auto-sort.mjs
@@ -53,6 +55,7 @@ const DRY_RUN = (process.env.DRY_RUN ?? "1") !== "0";
 const MAX_PER_ACCOUNT = parseInt(process.env.MAX_PER_ACCOUNT ?? "0", 10) || 0;
 const PAGE_SIZE = parseInt(process.env.PAGE_SIZE ?? "50", 10) || 50;
 const TEMPERATURE = Number(process.env.TEMPERATURE ?? "0");
+const MAX_TOKENS = parseInt(process.env.MAX_TOKENS ?? "512", 10) || 512;
 const LOG_FILE = process.env.LOG_FILE ?? join(homedir(), "Library", "Logs", "apple-mail-autosort.log");
 // Logs record message-ids by default. Subjects/senders are PII, so they are
 // only written when AUTOSORT_VERBOSE=1 (useful for tuning the prompt).
@@ -147,12 +150,18 @@ async function chat(messages) {
   const res = await fetch(`${LMSTUDIO_URL}/v1/chat/completions`, {
     method: "POST",
     headers,
-    body: JSON.stringify({ model: LMSTUDIO_MODEL, messages, temperature: TEMPERATURE, max_tokens: 24, stream: false }),
-    signal: AbortSignal.timeout(30_000),
+    body: JSON.stringify({ model: LMSTUDIO_MODEL, messages, temperature: TEMPERATURE, max_tokens: MAX_TOKENS, stream: false }),
+    signal: AbortSignal.timeout(60_000),
   });
   if (!res.ok) throw new Error(`LM Studio chat ${res.status}: ${await res.text()}`);
   const data = await res.json();
-  return (data?.choices?.[0]?.message?.content ?? "").trim();
+  const content = (data?.choices?.[0]?.message?.content ?? "").trim();
+  // An empty answer is a failure, not a KEEP: a reasoning model that burns the
+  // whole budget thinking returns "" with finish_reason "length".
+  if (!content) {
+    throw new Error(`empty model reply (finish_reason=${data?.choices?.[0]?.finish_reason}); raise MAX_TOKENS`);
+  }
+  return content;
 }
 
 // Ask the model to choose exactly one folder name (or KEEP) for one email.
