@@ -3,7 +3,7 @@
   "name": "io.github.jayvee6/apple-mail-mcp",
   "title": "Apple Mail MCP",
   "description": "LLM access to Apple Mail and iCloud via AppleScript. Read, search, compose, reply, flag and delete.",
-  "version": "0.1.0",
+  "version": "1.2.0",
   "repository": {
     "url": "https://github.com/jayvee6/apple-mail-mcp",
     "source": "github"
@@ -12,7 +12,7 @@
     {
       "registryType": "npm",
       "identifier": "@jdot6/apple-mail-mcp",
-      "version": "0.1.0",
+      "version": "1.2.0",
       "transport": {
         "type": "stdio"
       }

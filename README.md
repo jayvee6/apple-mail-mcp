@@ -123,7 +123,7 @@ Configure via environment variables in `claude_desktop_config.json`:
       "env": {
         "APPLE_MAIL_AI_PROVIDER": "lmstudio",
         "APPLE_MAIL_AI_ENDPOINT": "http://localhost:1234",
-        "APPLE_MAIL_AI_MODEL": "gemma-4-it"
+        "APPLE_MAIL_AI_MODEL": "google/gemma-4-e4b"
       }
     }
   }
@@ -132,9 +132,9 @@ Configure via environment variables in `claude_desktop_config.json`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `APPLE_MAIL_AI_PROVIDER` | `lmstudio` | `lmstudio` \| `openai` \| `foundation` \| `none` |
+| `APPLE_MAIL_AI_PROVIDER` | `lmstudio` | `lmstudio` \| `openai` \| `none` (`foundation` is reserved for Apple's on-device models and not implemented yet) |
 | `APPLE_MAIL_AI_ENDPOINT` | `http://localhost:1234` | Base URL for the AI server |
-| `APPLE_MAIL_AI_MODEL` | `gemma-4-it` | Model identifier |
+| `APPLE_MAIL_AI_MODEL` | `gemma-4-it` | Model id as LM Studio lists it (`lms ls`, or `GET /v1/models`) |
 | `APPLE_MAIL_AI_API_KEY` | *(none)* | Bearer token for remote providers |
 | `APPLE_MAIL_AI_ENRICH_EVENTS` | *(off)* | Set to `1` to auto-classify new mail events |
 | `APPLE_MAIL_AI_ALLOW_REMOTE` | *(off)* | Set to `1` to allow a non-localhost AI endpoint |
@@ -157,9 +157,9 @@ The `skill/SKILL.md` file in this repo is a Claude skill that adds a multi-agent
 
 An arbiter synthesizes the reviews into a revised draft and changelog. Claude shows you the result and waits for your approval before opening the draft in Mail. `send: true` is never used for LLM-drafted email — you send from Mail yourself.
 
-To install the skill in Claude Code:
+To install the skill in Claude Code, copy it into your skills folder:
 ```bash
-/skill install /path/to/apple-mail-mcp/skill/SKILL.md
+mkdir -p ~/.claude/skills/email-compose-review && cp skill/SKILL.md ~/.claude/skills/email-compose-review/
 ```
 
 ---

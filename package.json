@@ -1,6 +1,6 @@
 {
   "name": "@jdot6/apple-mail-mcp",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The only way to give Claude (or any LLM) access to Apple Mail and iCloud — local AppleScript bridge for macOS",
   "main": "dist/index.js",
   "bin": {
@@ -16,7 +16,9 @@
     "build": "tsc",
     "dev": "tsx src/index.ts",
     "start": "node dist/index.js",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test": "tsc && node --test test/",
+    "prepublishOnly": "npm test"
   },
   "type": "module",
   "dependencies": {
